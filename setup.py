@@ -7,7 +7,7 @@ setup(name='leocornus.bookkeeping',
       version=version,
       description="A Plone way to book keeping",
       long_description=open(os.path.join('leocornus/bookkeeping', "README.txt")).read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+          open(os.path.join("leocornus/bookkeeping/docs", "HISTORY.txt")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Development Status :: 4 - Beta",
