@@ -32,6 +32,18 @@ class InstallationTestCase(BookkeepingTestCase):
 
         # install bookkeeping...
 
+        # install by import the default profile.
+        setup_tool = getattr(self.portal, 'portal_setup')
+        setup_tool.\
+            runAllImportStepsFromProfile('profile-%s' % \
+                                         'leocornus.bookkeeping:default')
+        types_tool = getattr(self.portal, 'portal_types')
+        types = types_tool.listContentTypes()
+        self.assertTrue('BKFolder' in  types)
+        # after install, we should be able to crate BKFolder.
+        id = self.portal.invokeFactory('BKFolder', 'bk1')
+        self.assertEquals(id, 'bk1')
+
         # check/verify after installation.
 
 def test_suite():

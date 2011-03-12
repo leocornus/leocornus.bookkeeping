@@ -1,9 +1,13 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
+    xmlns:cmf="http://namespaces.zope.org/cmf"
     i18n_domain="leocornus.bookkeeping">
 
   <five:registerPackage package="." initialize=".initialize" />
+
+  <!-- File System Directory Views registration -->
+  <cmf:registerDirectory name="leocornus.bookkeeping"/>
 
   <include file="profiles.zcml" />
 

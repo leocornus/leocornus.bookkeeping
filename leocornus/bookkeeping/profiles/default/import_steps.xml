@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<import-steps>
+
+  <import-step
+     id="leocornus.bookkeeping_various"
+     version="20110311-01"
+     handler="leocornus.bookkeeping.util.setuphandlers.importVarious"
+     title="Leocornus Bookkeeping: import various steps">
+    Various import various steps.
+  </import-step>
+
+</import-steps>
