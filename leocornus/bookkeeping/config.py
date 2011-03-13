@@ -5,8 +5,8 @@
 # Q: Why we need this?
 
 # project name
-PROJECTNAME = "leocornus.bookkeeping"
+PROJECTNAME = "LeocornusBookkeeping"
 
 SKINS_DIR = "skins"
 
-GLOBALs = globals()
+GLOBALS = globals()

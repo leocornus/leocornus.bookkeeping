@@ -7,16 +7,21 @@ __docformat__ = 'plaintext'
 from Products.Archetypes.public import process_types
 from Products.Archetypes.public import listTypes
 from Products.CMFCore.utils import ContentInit
+from Products.CMFCore.DirectoryView import registerDirectory
 
-from permissions import initialize as initialize_permissions
-from config import PROJECTNAME
+from leocornus.bookkeeping.permissions import initialize as initialize_permissions
+from leocornus.bookkeeping.config import PROJECTNAME
+from leocornus.bookkeeping.config import SKINS_DIR
+from leocornus.bookkeeping.config import GLOBALS
+
+registerDirectory(SKINS_DIR, GLOBALS)
 
 #
 def initialize(context):
     """Initializer called when used as a Zope 2 product."""
 
     # import types from this project to register them.
-    import content
+    import leocornus.bookkeeping.content
 
     # get content type list, content constructor list, and file type
     # information (fti) list.
@@ -60,7 +65,7 @@ def initialize(context):
             extra_constructors = (constructor,),
 
             # FileTypeInformation is specified.
-            fti = ftis,
+            #fti = ftis,
 
             # The initialization execution function of ContentInit is 
             # called. After necessary processing is done as CMFCore, the 

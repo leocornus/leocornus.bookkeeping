@@ -10,9 +10,9 @@ from AccessControl import Permissions
 
 # we require Plone 3.x using the new class.
 from Products.CMFCore import permissions as CMFCorePermissions
-import Products.Archetypes.public as atapi
+from Products.Archetypes.public import listTypes
 
-import config
+from leocornus.bookkeeping.config import PROJECTNAME
 
 __author__ = 'Sean Chen'
 __email__ = 'sean.chen@leocorn.com'
@@ -27,13 +27,14 @@ def initialize():
     permissions = {}
 
     # The list of the contents type registered to Archetype is acquired.
-    types = atapi.listTypes(config.PROJECTNAME)
+    types = listTypes(PROJECTNAME)
 
     # The permission setting of each contents type is added.
     for atype in  types:
         # The permission name displayed in the permission tab of ZMI is 
         # made.
-        permission = "%s: Add %s" % (config.PROJECTNAME, atype['portal_type'])
+        permission = "%s: Add %s" % (PROJECTNAME, atype['portal_type'])
+        log.debug("Adding permission - > " + permission)
 
         # The permission made for the dictionary of the contents type is 
         # preserved.
