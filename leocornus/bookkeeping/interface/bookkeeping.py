@@ -25,3 +25,10 @@ class IBKTransaction(Interface):
     defines the interfaces for a transaction.
     """
     pass
+
+# the category interface
+class IBKCategory(Interface):
+    """
+    defines the interfaces for a transaction category.
+    """
+    pass
