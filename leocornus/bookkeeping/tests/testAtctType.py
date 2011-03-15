@@ -12,6 +12,7 @@ from Products.ATContentTypes.tests.test_atfolder import TestSiteATFolder
 from Products.ATContentTypes.tests.test_atdocument import TestSiteATDocument
 
 from leocornus.bookkeeping.content.BKFolder import BKFolder
+from leocornus.bookkeeping.content.BKTransaction import BKTransaction
 
 __author__ = "Sean Chen"
 __email__ = "sean.chen@leocorn.com"
@@ -32,6 +33,20 @@ class TestBKFolder(TestSiteATFolder):
     icon = 'BKFolder_icon.gif'
 
 tests.append(TestBKFolder)
+
+class TestBKTransaction(ATCTTypeTestCase):
+    """
+    Testing basics about the AT Content Types within this product.
+    """
+
+    klass = BKTransaction
+    portal_type = "BKTransaction"
+    # the title in the types/BKFolder.xml file.
+    title = 'Bookkeeping Transaction'
+    meta_type = 'BKTransaction'
+    icon = 'BKTransaction_icon.jpeg'
+
+tests.append(TestBKTransaction)
 
 # making test suite
 def test_suite():

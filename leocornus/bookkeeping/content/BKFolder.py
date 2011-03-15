@@ -15,6 +15,7 @@ from Products.Archetypes.public import LinesField
 from Products.Archetypes.public import LinesWidget
 from Products.Archetypes.public import IntegerField
 from Products.Archetypes.public import IntegerWidget
+from Products.Archetypes.public import DisplayList
 from Products.Archetypes.public import registerType
 # from ATContentTypes product
 from Products.ATContentTypes.interface.folder import IATFolder
@@ -69,8 +70,8 @@ BKFolderSchema = ATBTreeFolderSchema.copy() + Schema((
                 'Expense:Internet', 'Expense:OfficeSupply'
                 ),
             widget = LinesWidget(
-                label = 'Transaction Types',
-                description = 'Please specify the transaction types, one per line',
+                label = 'Transaction Categories',
+                description = 'Please specify the transaction categories, one per line',
                 cols = 40,
                 ),
             ),
@@ -134,6 +135,18 @@ class BKFolder(ATBTreeFolder):
                 categories.append(category) 
 
         return categories
+
+    security.declarePublic('vocabularyTransactionTypes')
+    def vocabularyTransactionTypes(self):
+        """
+        returns all transaction types as display list.
+        """
+
+        retList = []
+        for aType in self.bk_transaction_types:
+            retList.append((aType, aType))
+
+        return DisplayList(retList)
 
 # register to the Plone add-on product.
 registerType(BKFolder, PROJECTNAME)

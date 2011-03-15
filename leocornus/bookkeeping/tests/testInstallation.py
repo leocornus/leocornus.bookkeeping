@@ -44,6 +44,17 @@ class InstallationTestCase(BookkeepingTestCase):
         id = self.portal.invokeFactory('BKFolder', 'bk1')
         self.assertEquals(id, 'bk1')
 
+        # get the bk folder
+        bk = getattr(self.portal, id)
+        id = bk.invokeFactory('BKTransaction', 'tx1', None,
+                              bk_transaction_subtotal = '12.23',
+                              bk_transaction_gst = '0.451',
+                              bk_transaction_pst = '0.23')
+        self.assertEquals(id, 'tx1')
+        tx = getattr(bk, id)
+        self.assertEquals(tx.transactionTotal(), 12.23 + 0.45 + 0.23)
+        self.assertEquals(tx.getBk_transaction_total(), 12.23 + 0.45 + 0.23)
+
         # check/verify after installation.
 
 def test_suite():

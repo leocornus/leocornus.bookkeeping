@@ -11,4 +11,4 @@ __docformat__ = 'plaintext'
 
 from bookkeeping import IBKFolder
 from bookkeeping import IBKTransaction
-from bookkeeping import IBKCategory
+from bookkeeping import IBKCategoryOperator
