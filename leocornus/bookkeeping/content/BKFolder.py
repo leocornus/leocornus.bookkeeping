@@ -57,6 +57,23 @@ BKFolderSchema = ATBTreeFolderSchema.copy() + Schema((
                 description = 'This sequence will generate unique ids for all artifacts in this folder.',
                 ),
             ),
+
+        # this is a field to save the transaction categories.
+        # TODO: this field should be invisable!
+        LinesField(
+            'bk_transaction_categories',
+            searchable = False,
+            required = True,
+            default = ('Income:ConsultingIncome', 'Income:ServiceIncome', 
+                'Expense:Gas', 'Expense:Parking', 'Expense:Lunch',
+                'Expense:Internet', 'Expense:OfficeSupply'
+                ),
+            widget = LinesWidget(
+                label = 'Transaction Types',
+                description = 'Please specify the transaction types, one per line',
+                cols = 40,
+                ),
+            ),
         )
     )
 
@@ -103,6 +120,20 @@ class BKFolder(ATBTreeFolder):
         newId = self.bk_unique_sequence + 1
         self.setBk_unique_sequence(newId)
         return newId
+
+    security.declarePublic('getCategories')
+    def getCategories(self, transactionType):
+        """
+        return categories as a list for the given transaction type.
+        """
+
+        categories = []
+        for each in self.bk_transaction_categories:
+            tType, category = each.split(':')
+            if (tType == transactionType):
+                categories.append(category) 
+
+        return categories
 
 # register to the Plone add-on product.
 registerType(BKFolder, PROJECTNAME)

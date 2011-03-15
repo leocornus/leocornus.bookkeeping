@@ -27,8 +27,16 @@ class IBKTransaction(Interface):
     pass
 
 # the category interface
-class IBKCategory(Interface):
+class IBKCategoryOperator(Interface):
     """
     defines the interfaces for a transaction category.
     """
-    pass
+    def getCategories(transactionType):
+        """
+        return all categories for the given transaction type as a list.
+        """
+
+    def addCategory(transactionType, category):
+        """
+        add a new category for the transaction type.
+        """  
