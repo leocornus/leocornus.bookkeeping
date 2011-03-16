@@ -6,6 +6,8 @@ testing installation of Bookkeeping
 
 import unittest
 
+from Products.PloneTestCase import PloneTestCase
+
 from Products.CMFCore.utils import getToolByName
 
 from base import BookkeepingTestCase
@@ -22,31 +24,37 @@ class InstallationTestCase(BookkeepingTestCase):
     QuickInstaller tool.
     """
 
+    def afterSetUp(self):
+        # create a separate plone site to test the installation.
+        self.newsite = getattr(self.app, 'emptysite')
+        self.loginAsPortalOwner()
+
     # verify that we could find the leocornus bookkeeping product from Plone
     # QuickInstaller.
     def testInstall(self):
 
-        installer = getToolByName(self.portal, 'portal_quickinstaller')
+        installer = getToolByName(self.newsite, 'portal_quickinstaller')
         # make sure bookkeeping is available for quick installer.
         self.assertTrue(installer.isProductAvailable('leocornus.bookkeeping'))
 
         # install bookkeeping...
 
         # install by import the default profile.
-        setup_tool = getattr(self.portal, 'portal_setup')
+        setup_tool = getattr(self.newsite, 'portal_setup')
         setup_tool.\
             runAllImportStepsFromProfile('profile-%s' % \
                                          'leocornus.bookkeeping:default')
-        types_tool = getattr(self.portal, 'portal_types')
+        types_tool = getattr(self.newsite, 'portal_types')
         types = types_tool.listContentTypes()
         self.assertTrue('BKFolder' in  types)
         self.assertTrue('BKTransaction' in types)
+
         # after install, we should be able to crate BKFolder.
-        id = self.portal.invokeFactory('BKFolder', 'bk1')
+        id = self.newsite.invokeFactory('BKFolder', 'bk1')
         self.assertEquals(id, 'bk1')
 
         # get the bk folder
-        bk = getattr(self.portal, id)
+        bk = getattr(self.newsite, id)
         # create a transaction record.
         id = bk.invokeFactory('BKTransaction', 'tx1', None,
                               bk_transaction_subtotal = '12.23',

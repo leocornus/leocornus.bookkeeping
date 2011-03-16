@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<object name="portal_catalog" meta_type="Plone Catalog Tool">
+
+  <!-- transaction date -->
+  <index name="transactionDate" meta_type="DateIndex">
+    <property name="index_naive_time_as_local">True</property>
+  </index>
+
+  <!-- transaction type -->
+  <index name="transactionType" meta_type="FieldIndex">
+    <indexed_attr value="transactionType"/>
+  </index>
+
+  <!-- transaction category -->
+  <index name="transactionCategory" meta_type="FieldIndex">
+    <indexed_attr value="transactionCategory"/>
+  </index>
+
+  <!-- metadata columns -->
+  <column value="transactionDate"/>
+  <column value="transactionType"/>
+  <column value="transactionCategory"/>
+</object>

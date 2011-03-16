@@ -5,7 +5,7 @@ __doc__ = """The document to save transaction record"""
 __docformat__ = 'plaintext'
 
 import logging
-from decimal import Decimal
+import transaction
 
 from zope.interface import implements
 
@@ -28,6 +28,8 @@ from Products.ATContentTypes.content.base import ATCTContent
 from Products.ATContentTypes.content.schemata import ATContentTypeSchema
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 
+from Products.CMFCore import permissions
+
 from leocornus.bookkeeping.config import PROJECTNAME
 from leocornus.bookkeeping.interface import IBKTransaction
 
@@ -40,6 +42,7 @@ BKTransactionSchema = ATContentTypeSchema.copy() + Schema((
         # transaction date.
         DateTimeField(
             'bk_transaction_date',
+            accessor = 'transactionDate',
             searchable = False,
             required = True,
             widget = CalendarWidget(
@@ -55,6 +58,7 @@ BKTransactionSchema = ATContentTypeSchema.copy() + Schema((
         # transaction type.
         StringField(
             'bk_transaction_type',
+            accessor = 'transactionType',
             searchable = False,
             required = True,
             default = 'Expense',
@@ -70,6 +74,7 @@ BKTransactionSchema = ATContentTypeSchema.copy() + Schema((
         # transaction type.
         StringField(
             'bk_transaction_category',
+            accessor = 'transactionCategory',
             searchable = False,
             required = True,
             vocabulary = 'vocabularyTransactionCategories',
@@ -215,6 +220,30 @@ class BKTransaction(ATCTContent):
         return the subtotal for this transaction.
         """
         return float(self.getBk_transaction_subtotal())
+
+    security.declareProtected(permissions.View, 'transactionDate')
+    def transactionDate(self):
+        """
+        accessor for field transaction date, return as DateTime
+        """
+        txDate = self.getField('bk_transaction_date').get(self)
+        return txDate
+
+    security.declareProtected(permissions.View, 'transactionType')
+    def transactionType(self):
+        """
+        accessor for field transaction date, return as DateTime
+        """
+        trxType = self.getField('bk_transaction_type').get(self)
+        return trxType
+
+    security.declareProtected(permissions.View, 'transactionCategory')
+    def transactionCategory(self):
+        """
+        accessor for field transaction date, return as DateTime
+        """
+        category = self.getField('bk_transaction_category').get(self)
+        return category
 
 # register the content type.
 registerType(BKTransaction, PROJECTNAME)

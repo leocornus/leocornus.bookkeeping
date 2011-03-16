@@ -38,7 +38,8 @@ PloneTestCase.setupPloneSite(products=['leocornus.bookkeeping'])
 
 # we could set up more plone site just give different id.
 # try to setup one more plone site for testing.
-#PloneTestCase.setupPloneSite(id='site1')
+# NOTICE: looks like we have to do it here
+PloneTestCase.setupPloneSite(id='emptysite')
 
 class BookkeepingTestUtils(object):
     """
