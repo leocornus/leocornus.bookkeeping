@@ -193,12 +193,28 @@ class BKTransaction(ATCTContent):
         """
         calculate the total for transaction total.
         """
+        return self.subtotal() + self.gst() + self.pst()
 
-        subtotal = float(self.getBk_transaction_subtotal())
-        gst = float(self.getBk_transaction_gst())
-        pst = float(self.getBk_transaction_pst())
+    security.declarePublic('pst')
+    def pst(self):
+        """
+        return the pst fixed point as a float.
+        """
+        return float(self.getBk_transaction_pst())
 
-        return subtotal + gst + pst
+    security.declarePublic('gst')
+    def gst(self):
+        """
+        return the gst/hst for this transaction.
+        """
+        return float(self.getBk_transaction_gst())
+
+    security.declarePublic('subtotal')
+    def subtotal(self):
+        """
+        return the subtotal for this transaction.
+        """
+        return float(self.getBk_transaction_subtotal())
 
 # register the content type.
 registerType(BKTransaction, PROJECTNAME)

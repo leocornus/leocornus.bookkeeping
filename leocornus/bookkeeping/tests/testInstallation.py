@@ -40,6 +40,7 @@ class InstallationTestCase(BookkeepingTestCase):
         types_tool = getattr(self.portal, 'portal_types')
         types = types_tool.listContentTypes()
         self.assertTrue('BKFolder' in  types)
+        self.assertTrue('BKTransaction' in types)
         # after install, we should be able to crate BKFolder.
         id = self.portal.invokeFactory('BKFolder', 'bk1')
         self.assertEquals(id, 'bk1')
@@ -54,6 +55,7 @@ class InstallationTestCase(BookkeepingTestCase):
         tx = getattr(bk, id)
         self.assertEquals(tx.transactionTotal(), 12.23 + 0.45 + 0.23)
         self.assertEquals(tx.getBk_transaction_total(), 12.23 + 0.45 + 0.23)
+        self.assertEquals(tx.pst(), 0.23)
 
         # check/verify after installation.
 
