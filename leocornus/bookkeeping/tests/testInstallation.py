@@ -47,6 +47,7 @@ class InstallationTestCase(BookkeepingTestCase):
 
         # get the bk folder
         bk = getattr(self.portal, id)
+        # create a transaction record.
         id = bk.invokeFactory('BKTransaction', 'tx1', None,
                               bk_transaction_subtotal = '12.23',
                               bk_transaction_gst = '0.451',

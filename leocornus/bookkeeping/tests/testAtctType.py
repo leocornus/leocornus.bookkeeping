@@ -44,7 +44,7 @@ class TestBKTransaction(ATCTTypeTestCase):
     # the title in the types/BKFolder.xml file.
     title = 'Bookkeeping Transaction'
     meta_type = 'BKTransaction'
-    icon = 'BKTransaction_icon.jpeg'
+    icon = 'BKTransaction_icon.jpg'
 
 tests.append(TestBKTransaction)
 
