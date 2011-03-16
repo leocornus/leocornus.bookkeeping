@@ -6,7 +6,7 @@
      version="20110311-01"
      handler="leocornus.bookkeeping.util.setuphandlers.importVarious"
      title="Leocornus Bookkeeping: import various steps">
-    Various import various steps.
+    Various import steps.
   </import-step>
 
 </import-steps>

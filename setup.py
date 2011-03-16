@@ -31,6 +31,7 @@ setup(name='leocornus.bookkeeping',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'Products.MasterSelectWidget',
           # -*- Extra requirements: -*-
       ],
       entry_points="""

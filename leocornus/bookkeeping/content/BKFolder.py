@@ -24,6 +24,8 @@ from Products.ATContentTypes.atct import ATFolder
 from Products.ATContentTypes.atct import ATBTreeFolder
 from Products.ATContentTypes.atct import ATBTreeFolderSchema
 
+from Products.CMFCore import permissions
+
 from OFS.interfaces import IOrderedContainer as OFSIOrderedContainer
 
 from leocornus.bookkeeping.config import PROJECTNAME
@@ -136,14 +138,29 @@ class BKFolder(ATBTreeFolder):
 
         return categories
 
-    security.declarePublic('vocabularyTransactionTypes')
-    def vocabularyTransactionTypes(self):
+    security.declarePublic('vocabularyTrxTypes')
+    def vocabularyTrxTypes(self):
         """
         returns all transaction types as display list.
         """
 
         retList = []
         for aType in self.bk_transaction_types:
+            retList.append((aType, aType))
+
+        return DisplayList(retList)
+
+    security.declareProtected(permissions.View, 'vocabularyTrxTypes')
+    def vocabularyTrxCategories(self, masterType=None):
+        """
+        returns all transaction types as display list.
+        """
+
+        categories = (masterType == None and
+                      getCategories(self.transactionType())
+                      or getCategories(masterType))
+        retList = []
+        for aType in categories:
             retList.append((aType, aType))
 
         return DisplayList(retList)

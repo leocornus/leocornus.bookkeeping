@@ -30,6 +30,8 @@ from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 
 from Products.CMFCore import permissions
 
+from Products.MasterSelectWidget.MasterSelectWidget import MasterSelectWidget
+
 from leocornus.bookkeeping.config import PROJECTNAME
 from leocornus.bookkeeping.interface import IBKTransaction
 
@@ -62,12 +64,19 @@ BKTransactionSchema = ATContentTypeSchema.copy() + Schema((
             searchable = False,
             required = True,
             default = 'Expense',
-            vocabulary = 'vocabularyTransactionTypes',
-            widget = SelectionWidget(
+            vocabulary = 'vocabularyTrxTypes',
+            widget = MasterSelectWidget(
                 label = 'Transaction Type',
                 description = 'Please select the transaction type.',
                 # available format: flex, select, radio
-                format = 'flex',
+                format = 'select',
+                slave_fields = (
+                    {'name' : 'bk_transaction_category',
+                     'action' : 'vocabulary',
+                     'vocab_method' : 'vocabularyTrxCategories',
+                     'control_param' : 'masterType',
+                    },
+                    ),
                 ),
             ),
 
@@ -77,12 +86,12 @@ BKTransactionSchema = ATContentTypeSchema.copy() + Schema((
             accessor = 'transactionCategory',
             searchable = False,
             required = True,
-            vocabulary = 'vocabularyTransactionCategories',
+            vocabulary = 'vocabularyTrxCategories',
             widget = SelectionWidget(
                 label = 'Transaction Category',
                 description = 'Please select the transaction category.',
                 # available format: flex, select, radio
-                format = 'flex',
+                format = 'select',
                 ),
             ),
 
