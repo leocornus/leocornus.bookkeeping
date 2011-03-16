@@ -150,20 +150,5 @@ class BKFolder(ATBTreeFolder):
 
         return DisplayList(retList)
 
-    security.declareProtected(permissions.View, 'vocabularyTrxTypes')
-    def vocabularyTrxCategories(self, masterType=None):
-        """
-        returns all transaction types as display list.
-        """
-
-        categories = (masterType == None and
-                      getCategories(self.transactionType())
-                      or getCategories(masterType))
-        retList = []
-        for aType in categories:
-            retList.append((aType, aType))
-
-        return DisplayList(retList)
-
 # register to the Plone add-on product.
 registerType(BKFolder, PROJECTNAME)

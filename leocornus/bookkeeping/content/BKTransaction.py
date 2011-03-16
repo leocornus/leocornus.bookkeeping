@@ -22,6 +22,7 @@ from Products.Archetypes.public import ComputedField
 from Products.Archetypes.public import ComputedWidget
 from Products.Archetypes.public import DateTimeField
 from Products.Archetypes.public import CalendarWidget
+from Products.Archetypes.public import DisplayList
 from Products.Archetypes.public import registerType
 # from ATContentTypes product
 from Products.ATContentTypes.content.base import ATCTContent
@@ -201,6 +202,21 @@ class BKTransaction(ATCTContent):
         self.log.info('the next value for leocornus bookkeeping sequence: %s',
                       newId)
         self.setId(self.bk_id_prefix + newId)
+
+    security.declarePublic('vocabularyTrxTypes')
+    def vocabularyTrxCategories(self, masterType=None):
+        """
+        returns all transaction types as display list.
+        """
+
+        categories = (masterType == None and
+                      self.getCategories(self.transactionType())
+                      or self.getCategories(masterType))
+        retList = []
+        for aType in categories:
+            retList.append((aType, aType))
+
+        return DisplayList(retList)
 
     security.declarePublic('transactionTotal')
     def transactionTotal(self):
