@@ -57,12 +57,43 @@ class TestSearchIndexing(BookkeepingTestCase):
                          bk_transaction_type = 'Expense',
                          bk_transaction_category = 'Lunch')
         self.trx = getattr(bk, 'trx1')
-
+        bk.invokeFactory('BKTransaction', id='trx2',
+                         bk_transaction_date = DateTime(2008, 2, 23),
+                         bk_transaction_type = 'Expense',
+                         bk_transaction_category = 'Lunch')
+ 
     def testFixture(self):
         # make sure the conent is created after setup.
         self.assertEquals(self.trx.transactionDate(), DateTime(2009, 2, 23))
         self.assertEquals(self.trx.transactionType(), 'Expense')
         self.assertEquals(self.trx.transactionCategory(), 'Lunch')
+
+    def testBasicSearch(self):
+        self.assertEquals(len(self.catalog(transactionDate=DateTime(2009, 2, 23))), 1)
+        self.assertEquals(len(self.catalog(transactionDate=DateTime(2009, 2, 22))), 0)
+        self.assertEquals(len(self.catalog(transactionDate=DateTime(2008, 2, 23))), 1)
+
+        self.assertEquals(len(self.catalog(transactionType='Expense')), 2)
+        self.assertEquals(len(self.catalog(transactionType='Ex')), 0)
+        self.assertEquals(len(self.catalog(transactionCategory='Lunch')), 2)
+        # index is case sensitive
+        self.assertEquals(len(self.catalog(transactionCategory='lunch')), 0)
+        self.assertEquals(len(self.catalog(transactionCategory='Gas')), 0)
+
+    def testTrxDateRangeSearch(self):
+        # testing search by date range.
+        year2009 = {'query' : [DateTime(2009,1,1,0,0,0), DateTime(2009,12,31,23,59,59)],
+                    'range' : 'min:max'
+                   }
+        m200901 = {'query' : [DateTime(2009,1,1,0,0,0), DateTime(2009,1,31,23,59,59)],
+                   'range' : 'min:max'
+                  }
+        m200902 = {'query' : [DateTime(2009,2,1,0,0,0), DateTime(2009,2,28,23,59,59)],
+                   'range' : 'min:max'
+                  }
+        self.assertEquals(len(self.catalog(transactionDate=year2009)), 1)
+        self.assertEquals(len(self.catalog(transactionDate=m200901)), 0)
+        self.assertEquals(len(self.catalog(transactionDate=m200902)), 1)
 
 def test_suite():
     suite = unittest.TestSuite()
