@@ -25,6 +25,7 @@ from Products.ATContentTypes.atct import ATBTreeFolder
 from Products.ATContentTypes.atct import ATBTreeFolderSchema
 
 from Products.CMFCore import permissions
+from Products.CMFCore.utils import getToolByName
 
 from OFS.interfaces import IOrderedContainer as OFSIOrderedContainer
 
@@ -40,6 +41,7 @@ BKFolderSchema = ATBTreeFolderSchema.copy() + Schema((
         # modules
         LinesField(
             'bk_transaction_types',
+            accessor = 'transactionTypes',
             searchable = False,
             required = True,
             default = ('Expense', 'Income'),
@@ -65,6 +67,7 @@ BKFolderSchema = ATBTreeFolderSchema.copy() + Schema((
         # TODO: this field should be invisable!
         LinesField(
             'bk_transaction_categories',
+            accessor = 'transactionCategories',
             searchable = False,
             required = True,
             default = ('Income:ConsultingIncome', 'Income:ServiceIncome', 
@@ -124,6 +127,18 @@ class BKFolder(ATBTreeFolder):
         self.setBk_unique_sequence(newId)
         return newId
 
+    security.declareProtected(permissions.View, 'transactionTypes')
+    def transactionTypes(self):
+        # accessor for bk_transaction_types.
+        trxTypes = self.getField('bk_transaction_types').get(self)
+        return trxTypes
+
+    security.declareProtected(permissions.View, 'transactionCategories')
+    def transactionCategories(self):
+        # accessor for bk_transaction_types.
+        categories = self.getField('bk_transaction_categories').get(self)
+        return categories
+
     security.declarePublic('getCategories')
     def getCategories(self, transactionType):
         """
@@ -131,7 +146,7 @@ class BKFolder(ATBTreeFolder):
         """
 
         categories = []
-        for each in self.bk_transaction_categories:
+        for each in self.transactionCategories():
             tType, category = each.split(':')
             if (tType == transactionType):
                 categories.append(category) 
@@ -145,10 +160,46 @@ class BKFolder(ATBTreeFolder):
         """
 
         retList = []
-        for aType in self.bk_transaction_types:
+        for aType in self.transactionTypes():
             retList.append((aType, aType))
 
         return DisplayList(retList)
+
+    security.declarePublic(permissions.View, 'searchTransactions')
+    def searchTransactions(self, criteria=None, **kwargs):
+        """
+        returns the catalog search result based on the provided criteria
+        or kwargs.
+        """
+
+        if criteria is None:
+            criteria = kwargs
+        else:
+            criteria = dict(criteria)
+
+        availableCriteria = {'id' : 'getId',
+                             'portal_type' : 'portal_type',
+                             'transactionDate' : 'transactionDate',
+                             'transactionType' : 'transactionType',
+                             'transactionCategory' : 'transactionCategory',
+                             'sort_on' : 'sort_on',
+                             'sort_order' : 'sort_order',
+                             'sort_limit' : 'sort_limit',
+                             }
+
+        query = {}
+        query['path'] = '/'.join(self.getPhysicalPath())
+        query['portal_type'] = 'BKTransaction'
+
+        for k, v in availableCriteria.items():
+            if k in criteria:
+                query[v] = criteria[k]
+            elif v in criteria:
+                query[v] = criteria[v]
+
+        catalog = getToolByName(self, 'portal_catalog')
+
+        return catalog.searchResults(query)
 
 # register to the Plone add-on product.
 registerType(BKFolder, PROJECTNAME)

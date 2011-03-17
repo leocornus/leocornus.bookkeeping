@@ -9,6 +9,9 @@
   <!-- File System Directory Views registration -->
   <cmf:registerDirectory name="leocornus.bookkeeping"/>
 
+  <!-- browser -->
+  <include package=".browser"/>
+
   <include file="profiles.zcml" />
 
 </configure>

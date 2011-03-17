@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="leocornus.bookkeeping">
+<body>
+
+<metal:main fill-slot="main">
+
+  <div tal:replace="structure provider:plone.abovecontenttitle"/>
+
+  <h1 class="documentFirstHeading">
+    <metal:field use-macro="python:here.widget('title', mode='view')">
+      Title or id
+    </metal:field>
+  </h1>
+
+  <div tal:replace="structure provider:plone.belowcontenttitle" />
+
+  <p class="documentDescription">
+    <metal:field use-macro="python:here.widget('description', mode='view')">
+      Description
+    </metal:field>
+  </p>
+
+  <div tal:replace="structure provider:plone.abovecontentbody" />
+
+  <h3>Quick Summary By Year</h3>
+  <table class='listing' width="100%"><tbody>
+    <tr>
+      <th>Year</th>
+      <tal:block tal:repeat="type here/transactionTypes">
+        <th colspan="3"><span tal:replace="type"/></th>
+      </tal:block>
+    </tr>
+    <!-- one row for each year. -->
+    <tal:block tal:repeat="year view/getYears">
+      <tr tal:define="oddrow repeat/year/odd;"
+          tal:attributes="class python: oddrow and 'odd' or 'even'">
+        <td width="120px">
+          <span tal:replace="year"/>
+        </td>
+        <!-- repeat type for each year -->
+        <tal:block tal:repeat="type here/transactionTypes"
+                   tal:define="amounts python: view.getAmounts(type, year)">
+          <td>
+            <span tal:replace="python: amounts[3]"/>
+            <span tal:replace="python: amounts[0]"/>
+          </td>
+          <td>
+            <span tal:replace="python: amounts[1]"/>
+          </td>
+          <td>
+            <span tal:replace="python: amounts[2]"/>
+          </td>
+        </tal:block>
+      </tr>
+    </tal:block>
+  </tbody></table>
+
+  <!-- footer. -->
+  <div metal:use-macro="here/document_relateditems/macros/relatedItems">
+    Show related items if they exist
+  </div>
+
+  <div tal:replace="structure provider:plone.belowcontentbody" />
+
+</metal:main>
+
+</body>
+</html>

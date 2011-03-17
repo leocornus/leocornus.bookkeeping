@@ -95,6 +95,31 @@ class TestSearchIndexing(BookkeepingTestCase):
         self.assertEquals(len(self.catalog(transactionDate=m200901)), 0)
         self.assertEquals(len(self.catalog(transactionDate=m200902)), 1)
 
+    def testAdvanceSearch(self):
+        # testing combined search
+        year2009 = {'query' : [DateTime(2009,1,1,0,0,0), DateTime(2009,12,31,23,59,59)],
+                    'range' : 'min:max'
+                   }
+        self.assertEquals(len(self.catalog(transactionDate=year2009,
+                                           transactionType='Expense'))
+                          , 1)
+
+    def testSearchInterface(self):
+        # testing the BKFolder's searching interface.
+        bk = getattr(self.portal, 'bk')
+        query = {
+            'transactionType' : 'Expense'
+            }
+        self.assertEquals(len(bk.searchTransactions(query)), 2)
+        year2009 = {'query' : [DateTime(2009,1,1,0,0,0), DateTime(2009,12,31,23,59,59)],
+                    'range' : 'min:max'
+                   }
+        query = {
+            'transactionDate' : year2009,
+            'transactionType' : 'Expense'
+            }
+        self.assertEquals(len(bk.searchTransactions(query)), 1)
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestCatalogSetup))
