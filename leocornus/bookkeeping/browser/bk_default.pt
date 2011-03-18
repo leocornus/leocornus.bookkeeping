@@ -28,33 +28,44 @@
   <div tal:replace="structure provider:plone.abovecontentbody" />
 
   <h3>Quick Summary By Year</h3>
-  <table class='listing' width="100%"><tbody>
+  <table class='listing'><tbody>
     <tr>
-      <th>Year</th>
+      <th rowspan="2">Year</th>
       <tal:block tal:repeat="trxType here/transactionTypes">
-        <th colspan="3"><span tal:replace="trxType"/></th>
+        <th colspan="4"><span tal:replace="trxType"/></th>
+      </tal:block>
+    </tr>
+    <tr>
+      <tal:block tal:repeat="trxType here/transactionTypes">
+        <th>Subtotal</th>
+        <th>GST</th>
+        <th>PST</th>
+        <th><strong>Total</strong></th>
       </tal:block>
     </tr>
     <!-- one row for each year. -->
     <tal:block tal:repeat="year view/getYears">
       <tr tal:define="oddrow repeat/year/odd;"
           tal:attributes="class python: oddrow and 'odd' or 'even'">
-        <td width="120px">
+        <td width="36px">
           <span tal:replace="year"/>
         </td>
         <!-- repeat type for each year -->
         <tal:block tal:repeat="trxType here/transactionTypes">
           <tal:block tal:define="amounts python: view.getAmounts(trxType, year)">
-          <td>
+          <td width="36px">
             <span tal:replace="python: amounts[0]"/>
           </td>
-          <td>
+          <td width="36px">
             <span tal:replace="python: amounts[1]"/>
           </td>
-          <td>
+          <td width="36px">
             <span tal:replace="python: amounts[2]"/>
+          </td> 
+          <td width="36px">
+            <strong><span tal:replace="python: amounts[0] + amounts[1] + amounts[2]"/></strong>
           </td>
-          </tal:block>
+         </tal:block>
         </tal:block>
       </tr>
     </tal:block>
