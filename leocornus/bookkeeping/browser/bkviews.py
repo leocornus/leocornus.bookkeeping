@@ -68,4 +68,4 @@ class DefaultView(BrowserView):
             gst += obj.gst()
             pst += obj.pst()
 
-        return (subtotal, gst, pst, len(trxs))
+        return (subtotal, gst, pst)

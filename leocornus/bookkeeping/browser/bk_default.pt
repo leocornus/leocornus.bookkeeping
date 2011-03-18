@@ -31,8 +31,8 @@
   <table class='listing' width="100%"><tbody>
     <tr>
       <th>Year</th>
-      <tal:block tal:repeat="type here/transactionTypes">
-        <th colspan="3"><span tal:replace="type"/></th>
+      <tal:block tal:repeat="trxType here/transactionTypes">
+        <th colspan="3"><span tal:replace="trxType"/></th>
       </tal:block>
     </tr>
     <!-- one row for each year. -->
@@ -43,10 +43,9 @@
           <span tal:replace="year"/>
         </td>
         <!-- repeat type for each year -->
-        <tal:block tal:repeat="type here/transactionTypes"
-                   tal:define="amounts python: view.getAmounts(type, year)">
+        <tal:block tal:repeat="trxType here/transactionTypes">
+          <tal:block tal:define="amounts python: view.getAmounts(trxType, year)">
           <td>
-            <span tal:replace="python: amounts[3]"/>
             <span tal:replace="python: amounts[0]"/>
           </td>
           <td>
@@ -55,6 +54,7 @@
           <td>
             <span tal:replace="python: amounts[2]"/>
           </td>
+          </tal:block>
         </tal:block>
       </tr>
     </tal:block>
