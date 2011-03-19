@@ -18,9 +18,8 @@ from Products.Archetypes.public import IntegerWidget
 from Products.Archetypes.public import DisplayList
 from Products.Archetypes.public import registerType
 # from ATContentTypes product
-from Products.ATContentTypes.interface.folder import IATFolder
+from Products.ATContentTypes.interface.folder import IATBTreeFolder
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
-from Products.ATContentTypes.atct import ATFolder
 from Products.ATContentTypes.atct import ATBTreeFolder
 from Products.ATContentTypes.atct import ATBTreeFolderSchema
 
@@ -98,10 +97,9 @@ class BKFolder(ATBTreeFolder):
 
     schema = BKFolderSchema
 
-    __implements__ = (ATBTreeFolder.__implements__, 
-        ATFolder.__implements__)
+    __implements__ = (ATBTreeFolder.__implements__)
 
-    implements(IBKFolder, IATFolder, OFSIOrderedContainer)
+    implements(IBKFolder, IATBTreeFolder, OFSIOrderedContainer)
 
     # type, name
     meta_type = 'BKFolder'

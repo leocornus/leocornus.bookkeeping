@@ -8,7 +8,7 @@ ATContentTypes.
 import unittest
 
 from Products.ATContentTypes.tests.atcttestcase import ATCTTypeTestCase
-from Products.ATContentTypes.tests.test_atfolder import TestSiteATFolder
+from Products.ATContentTypes.tests.test_atfolder import TestSiteATBTreeFolder
 from Products.ATContentTypes.tests.test_atdocument import TestSiteATDocument
 
 from leocornus.bookkeeping.content.BKFolder import BKFolder
@@ -20,7 +20,7 @@ __email__ = "sean.chen@leocorn.com"
 # test cases list
 tests = []
 
-class TestBKFolder(TestSiteATFolder):
+class TestBKFolder(TestSiteATBTreeFolder):
     """
     Testing basics about the AT Content Types within this product.
     """
