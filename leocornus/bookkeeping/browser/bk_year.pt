@@ -1,0 +1,79 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="leocornus.bookkeeping">
+<body>
+
+<metal:main fill-slot="main">
+
+  <div tal:replace="structure provider:plone.abovecontenttitle"/>
+
+  <h1 class="documentFirstHeading">
+    <metal:field use-macro="python:here.widget('title', mode='view')">
+      Title or id
+    </metal:field>
+  </h1>
+
+  <div tal:replace="structure provider:plone.belowcontenttitle" />
+
+  <p class="documentDescription">
+    <metal:field use-macro="python:here.widget('description', mode='view')">
+      Description
+    </metal:field>
+  </p>
+
+  <div tal:replace="structure provider:plone.abovecontentbody" />
+
+  <h3>Year [<span tal:replace="python: view.year"/>] Summary</h3>
+
+  <table class='listing'><tbody>
+    <tr>
+      <tal:block tal:repeat="trxType here/transactionTypes">
+        <th><span tal:replace="trxType"/></th>
+      </tal:block>
+    </tr>
+    <tr>
+      <tal:block tal:repeat="trxType here/transactionTypes">
+        <td tal:define="typeAmount python: view.getTypeAmount(year, trxType);">
+<table class='listing'><tbody>
+  <tr>
+    <th>Category</th>
+    <th>Subtotal</th>
+    <th>GST/HST</th>
+    <th>PST</th>
+    <th><strong>Total</strong></th>
+  </tr>
+  <tal:block tal:repeat="category python: view.getCategories(year, trxType)">
+    <tr tal:define="oddrow repeat/category/odd;
+                    categoryAmount category/amount"
+        tal:attributes="class python: oddrow and 'odd' or 'even'">
+      <td><span tal:replace="category/name"/></td>
+      <td><span tal:replace="categoryAmount/subtotal"/></td>
+      <td><span tal:replace="categoryAmount/gst"/></td>
+      <td><span tal:replace="categoryAmount/pst"/></td>
+      <td><strong><span tal:replace="python: sum(categoryAmount.values())"/></strong></td>
+    </tr>
+  </tal:block>
+  <tr style="font-weight: blod">
+    <td>Total</td>
+    <td><span tal:replace="typeAmount/subtotal"/></td>
+    <td><span tal:replace="typeAmount/gst"/></td>
+    <td><span tal:replace="typeAmount/pst"/></td>
+    <td><strong><span tal:replace="python: sum(typeAmount.values())"/></strong></td>
+  </tr>
+</tbody></table>
+        </td>
+      </tal:block>
+    </tr>
+    <tr>
+      <!-- the summary for each type? -->
+    </tr>
+  </tbody></table>
+
+</metal:main>
+
+</body>
+</html>

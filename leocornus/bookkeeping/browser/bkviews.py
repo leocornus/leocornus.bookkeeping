@@ -46,6 +46,14 @@ class DefaultView(BrowserView):
 
         return years
 
+    # retrun the the url for year view.
+    def getYearViewUrl(self, year):
+        """
+        This URL will load the year view for all transactions.
+        """
+
+        return 'bk_year_view?year=' + str(year)
+
     # get the subtotal amount for given transaction type and year.
     def getAmounts(self, trxType, year):
         """
@@ -84,6 +92,7 @@ class YearView(BrowserView):
 
         self.context = context
         self.request = request
+        self.year = request['year']
         # the root folder of bookkeeping.
         self.bkfolder = aq_inner(self.context)
 

@@ -82,10 +82,38 @@ We should have a BKFolder created.
     True
     >>> browser.url
     'http://nohost/plone/test-bookkeeping/'
+    >>> browser.getLink('2010').url
+    'http://nohost/plone/test-bookkeeping/bk_year_view?year=2010'
+    >>> browser.getLink('2010').click()
+    >>> 'Year [2010] Summary' in browser.contents
+    True
 
 Now let's create a transaction record.
 
+    >>> browser.open('http://nohost/plone/test-bookkeeping')
     >>> browser.getLink('Bookkeeping Transaction').click()
     >>> browser.url
     'http://nohost/plone/test-bookkeeping/portal_factory/BKTransaction/bktransaction.../edit'
+    >>> browser.getControl(name='title').value = 'transaction record one'
+    >>> browser.getControl(name='description').value = 'the first transaction record'
 
+Set up transaction date.
+
+    >>> browser.getControl(name='bk_transaction_date_year').value = ['2010']
+    >>> browser.getControl(name='bk_transaction_date_month').value = ['07']
+    >>> browser.getControl(name='bk_transaction_date_day').value = ['18']
+
+Set up transaction subtotal, gst, pst
+
+    >>> browser.getControl(name='bk_transaction_subtotal').value = '234.56'
+    >>> browser.getControl(name='bk_transaction_gst').value = '34.67'
+    >>> browser.getControl(name='bk_transaction_pst').value = '12.5'
+
+We also can set up transaction type and category.
+Now we can save it.
+
+    >>> browser.getControl('Save').click()
+    >>> 'transaction record one' in browser.contents
+    True
+    >>> browser.url
+    'http://nohost/plone/test-bookkeeping/tx1/'

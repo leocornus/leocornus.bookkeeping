@@ -45,10 +45,11 @@
     </tr>
     <!-- one row for each year. -->
     <tal:block tal:repeat="year view/getYears">
-      <tr tal:define="oddrow repeat/year/odd;"
+      <tr tal:define="oddrow repeat/year/odd;
+                      yearUrl python: view.getYearViewUrl(year)"
           tal:attributes="class python: oddrow and 'odd' or 'even'">
         <td width="36px">
-          <span tal:replace="year"/>
+          <a href="#" tal:attributes="href yearUrl"><span tal:replace="year"/></a>
         </td>
         <!-- repeat type for each year -->
         <tal:block tal:repeat="trxType here/transactionTypes">
@@ -63,7 +64,7 @@
             <span tal:replace="python: amounts[2]"/>
           </td> 
           <td width="36px">
-            <strong><span tal:replace="python: amounts[0] + amounts[1] + amounts[2]"/></strong>
+            <strong><span tal:replace="python: sum(amounts)"/></strong>
           </td>
          </tal:block>
         </tal:block>
