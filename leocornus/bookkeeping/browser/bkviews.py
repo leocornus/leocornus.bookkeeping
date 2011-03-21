@@ -12,6 +12,8 @@ from DateTime import DateTime
 
 from Products.Five.browser import BrowserView
 
+from leocornus.bookkeeping.util.catalog import getYearQuery
+
 __author__ = "Sean Chen"
 __email__ = "sean.chen@leocorn.com"
 
@@ -50,12 +52,8 @@ class DefaultView(BrowserView):
         the smount for sutotal, gst, pst as tuple
         """
 
-        yearQuery = {
-            'query' : [DateTime(year,1,1,0,0,0), DateTime(year,12,31,23,59,59)],
-            'range' : 'min:max'
-            }
         query = {
-            'transactionDate' : yearQuery,
+            'transactionDate' : getYearQuery(year),
             'transactionType' : trxType
             }
         trxs = self.bkfolder.searchTransactions(query)
@@ -69,3 +67,23 @@ class DefaultView(BrowserView):
             pst += obj.pst()
 
         return (subtotal, gst, pst)
+
+# The year view.
+class YearView(BrowserView):
+    """
+    This view will provide the summary by category for the specified year. 
+    It will show one column for each transaction type.  For each category, 
+    the subtotal, gst, pst and total will be list.
+    """
+    
+    # initializing
+    def __init__(self, context, request):
+        """
+        year will be passed by a HTTP Request param.
+        """
+
+        self.context = context
+        self.request = request
+        # the root folder of bookkeeping.
+        self.bkfolder = aq_inner(self.context)
+

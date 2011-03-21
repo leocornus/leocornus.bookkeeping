@@ -30,7 +30,8 @@ def setup_product():
 
 setup_product()
 # we need a Plone site for some of the module.
-PloneTestCase.setupPloneSite(products=['leocornus.bookkeeping'])
+PloneTestCase.setupPloneSite(products=['leocornus.bookkeeping', 
+                                       'Products.MasterSelectWidget'])
 
 # now we will have Zope application server and a Plone site set up.
 # Zope application server can be accessed by using self.app
