@@ -14,7 +14,7 @@
      permission="zope2.View"
   />
 
-  <!-- the default view for bookkeeping -->
+  <!-- the year view for bookkeeping -->
   <browser:page
      name="bk_year_view"
      for="leocornus.bookkeeping.interface.IBKFolder"
@@ -22,5 +22,15 @@
      template="bk_year.pt"
      permission="zope2.View"
   />
+
+  <!-- the category view for bookkeeping -->
+  <browser:page
+     name="bk_category_view"
+     for="leocornus.bookkeeping.interface.IBKFolder"
+     class=".bkviews.CategoryView"
+     template="bk_category.pt"
+     permission="zope2.View"
+  />
+
 
 </configure>

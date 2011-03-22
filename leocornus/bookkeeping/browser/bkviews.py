@@ -100,7 +100,15 @@ class YearView(BrowserView):
         # load year summary.
         #self.loadYearSummary()
 
-    # load year amounts.
+    # retrun the the url for category view.
+    def getCategoryViewUrl(self, trxType, category):
+        """
+        This URL will load the category view for all transactions.
+        """
+
+        return 'bk_category_view?year=' + self.year + '&category=' + category + '&trxtype=' + trxType
+
+   # load year amounts.
     def loadYearSummary(self):
         """
         load amounts for each transaction type,
@@ -154,3 +162,59 @@ class YearView(BrowserView):
         """
 
         return self.yearSummary[trxType][category]
+
+# The year view.
+class CategoryView(BrowserView):
+    """
+    This view will provide the summary by category for the specified year. 
+    It will show one column for each transaction type.  For each category, 
+    the subtotal, gst, pst and total will be list.
+    """
+    
+    # initializing
+    def __init__(self, context, request):
+        """
+        year will be passed by a HTTP Request param.
+        """
+
+        self.context = context
+        self.request = request
+        self.year = request['year']
+        self.category = request['category']
+        self.trxType = request['trxtype']
+        # the root folder of bookkeeping.
+        self.bkfolder = aq_inner(self.context)
+        self.categoryTotal = {'subtotal':0.0, 'gst':0.0, 'pst':0.0}
+
+    # return all transactions for this category.
+    def getTransactions(self):
+
+        query = {
+            'transactionDate' : getYearQuery(int(self.year)),
+            'transactionType' : self.trxType,
+            'transactionCategory' : self.category
+            }
+        transactions = []
+
+        trxs = self.bkfolder.searchTransactions(query)
+        for trx in trxs:
+            transaction = {}
+            obj = trx.getObject()
+            transaction['id'] = obj.id
+            transaction['title'] = obj.title
+            transaction['description'] = obj.description
+            transaction['editUrl'] = '/'.join(obj.getPhysicalPath()) + '/edit'
+            summary = {
+                'subtotal' : obj.subtotal(), 
+                'gst' : obj.gst(),
+                'pst' : obj.pst()}
+            transaction['summary'] = summary
+
+            self.categoryTotal['subtotal'] += obj.subtotal()
+            self.categoryTotal['gst'] += obj.gst()
+            self.categoryTotal['pst'] += obj.pst()
+
+            # add to transactions.
+            transactions.append(transaction)
+
+        return transactions

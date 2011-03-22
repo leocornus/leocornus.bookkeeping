@@ -1,0 +1,66 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="leocornus.bookkeeping">
+<body>
+
+<metal:main fill-slot="main">
+
+  <div tal:replace="structure provider:plone.abovecontenttitle"/>
+
+  <h1 class="documentFirstHeading">
+    <metal:field use-macro="python:here.widget('title', mode='view')">
+      Title or id
+    </metal:field>
+  </h1>
+
+  <div tal:replace="structure provider:plone.belowcontenttitle" />
+
+  <p class="documentDescription">
+    <metal:field use-macro="python:here.widget('description', mode='view')">
+      Description
+    </metal:field>
+  </p>
+
+  <div tal:replace="structure provider:plone.abovecontentbody" />
+
+  <h3>Transactions List for Category [<span tal:replace="python: view.trxType + ':' + view.category"/>] 
+    on Year [<span tal:replace="python: view.year"/>]</h3>
+
+  <table class='listing'><tbody>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Subtotal</th>
+      <th>GST/HST</th>
+      <th>PST</th>
+      <th><strong>Total</strong></th>
+    </tr>
+    <tal:block tal:repeat="transaction view/getTransactions">
+    <tr tal:define="oddrow repeat/transaction/odd;
+                    summary transaction/summary"
+        tal:attributes="class python: oddrow and 'odd' or 'even'">
+      <td><span tal:replace="transaction/title"/></td>
+      <td><span tal:replace="transaction/description"/></td>
+      <td><span tal:replace="summary/subtotal"/></td>
+      <td><span tal:replace="summary/gst"/></td>
+      <td><span tal:replace="summary/pst"/></td>
+      <td><strong><span tal:replace="python: sum(summary.values())"/></strong></td>
+    </tr>
+    </tal:block>
+    <tr>
+      <td colspan="2" align="right"><strong>Total:</strong></td>
+      <td><strong><span tal:replace="view/categoryTotal/subtotal"/></strong></td>
+      <td><strong><span tal:replace="view/categoryTotal/gst"/></strong></td>
+      <td><strong><span tal:replace="view/categoryTotal/pst"/></strong></td>
+      <td><strong><span tal:replace="python: sum(view.categoryTotal.values())"/></strong></td>
+    </tr>
+  </tbody></table>
+
+</metal:main>
+
+</body>
+</html>

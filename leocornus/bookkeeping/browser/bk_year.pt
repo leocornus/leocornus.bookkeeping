@@ -48,9 +48,10 @@
   </tr>
   <tal:block tal:repeat="category python: here.getCategories(trxType)">
     <tr tal:define="oddrow repeat/category/odd;
-                    categorySummary python: view.getCategorySummary(trxType, category)"
+                    categorySummary python: view.getCategorySummary(trxType, category);
+                    categoryUrl python: view.getCategoryViewUrl(trxType, category)"
         tal:attributes="class python: oddrow and 'odd' or 'even'">
-      <td><span tal:replace="category"/></td>
+      <td><a href='#' tal:attributes='href categoryUrl'><span tal:replace="category"/></a></td>
       <td><span tal:replace="categorySummary/subtotal"/></td>
       <td><span tal:replace="categorySummary/gst"/></td>
       <td><span tal:replace="categorySummary/pst"/></td>
