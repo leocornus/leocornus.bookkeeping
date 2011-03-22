@@ -29,42 +29,28 @@
 
   <h3>
     <a href="bk_default_view">Overall Summary</a> | 
-    <a href="#" tal:attributes="href python: 'bk_year_view?year=' + view.year">
-      <span tal:replace="view/year"/> Summary
+    <a href="#" tal:attributes="href python: 'bk_year_view?year=' + view.getYear()">
+      <span tal:replace="view/getYear"/> Summary
     </a> || 
     <a href="createObject?type_name=BKTransaction">Add Transaction</a>
   </h3>
 
-  <h3>Transactions List for Category [<span tal:replace="python: view.trxType + ':' + view.category"/>] 
-    on Year [<span tal:replace="python: view.year"/>]</h3>
-
   <table class='listing'><tbody>
     <tr>
       <th>Date</th>
-      <th>Title</th>
       <th>Subtotal</th>
-      <th>GST/HST</th>
+      <th>GST</th>
       <th>PST</th>
       <th><strong>Total</strong></th>
     </tr>
-    <tal:block tal:repeat="transaction view/getTransactions">
     <tr tal:define="oddrow repeat/transaction/odd;
                     summary transaction/summary"
         tal:attributes="class python: oddrow and 'odd' or 'even'">
       <td><span tal:replace="transaction/date"/></td>
-      <td><a href="#" tal:attributes="href transaction/editUrl"><span tal:replace="transaction/title"/></a></td>
       <td><span tal:replace="summary/subtotal"/></td>
       <td><span tal:replace="summary/gst"/></td>
       <td><span tal:replace="summary/pst"/></td>
       <td><strong><span tal:replace="python: sum(summary.values())"/></strong></td>
-    </tr>
-    </tal:block>
-    <tr>
-      <td colspan="2" align="right"><strong>Total:</strong></td>
-      <td><strong><span tal:replace="view/categoryTotal/subtotal"/></strong></td>
-      <td><strong><span tal:replace="view/categoryTotal/gst"/></strong></td>
-      <td><strong><span tal:replace="view/categoryTotal/pst"/></strong></td>
-      <td><strong><span tal:replace="python: sum(view.categoryTotal.values())"/></strong></td>
     </tr>
   </tbody></table>
 
