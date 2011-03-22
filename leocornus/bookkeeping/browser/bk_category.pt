@@ -27,6 +27,14 @@
 
   <div tal:replace="structure provider:plone.abovecontentbody" />
 
+  <h3>
+    <a href="bk_default_view">Overall Summary</a> | 
+    <a href="#" tal:attributes="href python: 'bk_year_view?year=' + view.year">
+      <span tal:replace="view/year"/> Summary
+    </a> || 
+    <a href="createObject?type_name=BKTransaction">Add Transaction</a>
+  </h3>
+
   <h3>Transactions List for Category [<span tal:replace="python: view.trxType + ':' + view.category"/>] 
     on Year [<span tal:replace="python: view.year"/>]</h3>
 
@@ -44,7 +52,7 @@
                     summary transaction/summary"
         tal:attributes="class python: oddrow and 'odd' or 'even'">
       <td><span tal:replace="transaction/date"/></td>
-      <td><span tal:replace="transaction/title"/></td>
+      <td><a href="#" tal:attributes="href transaction/editUrl"><span tal:replace="transaction/title"/></a></td>
       <td><span tal:replace="summary/subtotal"/></td>
       <td><span tal:replace="summary/gst"/></td>
       <td><span tal:replace="summary/pst"/></td>

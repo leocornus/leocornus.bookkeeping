@@ -27,6 +27,11 @@
 
   <div tal:replace="structure provider:plone.abovecontentbody" />
 
+  <h3>
+    <a href="bk_default_view">Overall Summary</a> ||
+    <a href="createObject?type_name=BKTransaction">Add Transaction</a>
+  </h3>
+
   <h3>Year [<span tal:replace="python: view.year"/>] Summary</h3>
 
   <table class='listing'><tbody>
