@@ -202,6 +202,7 @@ class CategoryView(BrowserView):
             obj = trx.getObject()
             transaction['id'] = obj.id
             transaction['title'] = obj.title
+            transaction['date'] = obj.transactionDate().strftime('%Y-%m-%d')
             transaction['description'] = obj.description
             transaction['editUrl'] = '/'.join(obj.getPhysicalPath()) + '/edit'
             summary = {

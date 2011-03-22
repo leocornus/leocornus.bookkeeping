@@ -43,8 +43,8 @@
     <tr tal:define="oddrow repeat/transaction/odd;
                     summary transaction/summary"
         tal:attributes="class python: oddrow and 'odd' or 'even'">
+      <td><span tal:replace="transaction/date"/></td>
       <td><span tal:replace="transaction/title"/></td>
-      <td><span tal:replace="transaction/description"/></td>
       <td><span tal:replace="summary/subtotal"/></td>
       <td><span tal:replace="summary/gst"/></td>
       <td><span tal:replace="summary/pst"/></td>
