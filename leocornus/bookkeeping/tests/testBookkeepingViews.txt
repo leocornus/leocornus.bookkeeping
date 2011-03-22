@@ -39,7 +39,7 @@ And we ensure that we get the friendly logged-in message:
     >>> "You are now logged in" in browser.contents
     True
 
-set to show full errors.
+set to show full error messages.
 
     >>> browser.handleErrors = False
 

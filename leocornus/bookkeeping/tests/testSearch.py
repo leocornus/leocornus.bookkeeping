@@ -120,6 +120,20 @@ class TestSearchIndexing(BookkeepingTestCase):
             }
         self.assertEquals(len(bk.searchTransactions(query)), 1)
 
+        query = {
+            'transactionDate' : year2009,
+            'transactionType' : 'Expense',
+            'transactionCategory' : 'Lunch'
+            }
+        self.assertEquals(len(bk.searchTransactions(query)), 1)
+
+        query = {
+            'transactionDate' : year2009,
+            'transactionType' : 'Expense',
+            'transactionCategory' : 'Gas'
+            }
+        self.assertEquals(len(bk.searchTransactions(query)), 0)
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestCatalogSetup))

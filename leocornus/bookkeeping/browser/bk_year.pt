@@ -37,7 +37,7 @@
     </tr>
     <tr>
       <tal:block tal:repeat="trxType here/transactionTypes">
-        <td tal:define="typeAmount python: view.getTypeAmount(year, trxType);">
+        <td tal:define="typeSummary python: view.getTypeSummary(trxType);">
 <table class='listing'><tbody>
   <tr>
     <th>Category</th>
@@ -46,30 +46,27 @@
     <th>PST</th>
     <th><strong>Total</strong></th>
   </tr>
-  <tal:block tal:repeat="category python: view.getCategories(year, trxType)">
+  <tal:block tal:repeat="category python: here.getCategories(trxType)">
     <tr tal:define="oddrow repeat/category/odd;
-                    categoryAmount category/amount"
+                    categorySummary python: view.getCategorySummary(trxType, category)"
         tal:attributes="class python: oddrow and 'odd' or 'even'">
-      <td><span tal:replace="category/name"/></td>
-      <td><span tal:replace="categoryAmount/subtotal"/></td>
-      <td><span tal:replace="categoryAmount/gst"/></td>
-      <td><span tal:replace="categoryAmount/pst"/></td>
-      <td><strong><span tal:replace="python: sum(categoryAmount.values())"/></strong></td>
+      <td><span tal:replace="category"/></td>
+      <td><span tal:replace="categorySummary/subtotal"/></td>
+      <td><span tal:replace="categorySummary/gst"/></td>
+      <td><span tal:replace="categorySummary/pst"/></td>
+      <td><strong><span tal:replace="python: sum(categorySummary.values())"/></strong></td>
     </tr>
   </tal:block>
-  <tr style="font-weight: blod">
-    <td>Total</td>
-    <td><span tal:replace="typeAmount/subtotal"/></td>
-    <td><span tal:replace="typeAmount/gst"/></td>
-    <td><span tal:replace="typeAmount/pst"/></td>
-    <td><strong><span tal:replace="python: sum(typeAmount.values())"/></strong></td>
+  <tr>
+    <td align="right"><strong>Total:</strong></td>
+    <td><strong><span tal:replace="typeSummary/subtotal"/></strong></td>
+    <td><strong><span tal:replace="typeSummary/gst"/></strong></td>
+    <td><strong><span tal:replace="typeSummary/pst"/></strong></td>
+    <td><strong><span tal:replace="python: sum(typeSummary.values())"/></strong></td>
   </tr>
 </tbody></table>
         </td>
       </tal:block>
-    </tr>
-    <tr>
-      <!-- the summary for each type? -->
     </tr>
   </tbody></table>
 

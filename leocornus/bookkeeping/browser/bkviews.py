@@ -96,3 +96,61 @@ class YearView(BrowserView):
         # the root folder of bookkeeping.
         self.bkfolder = aq_inner(self.context)
 
+        self.yearSummary = {}
+        # load year summary.
+        #self.loadYearSummary()
+
+    # load year amounts.
+    def loadYearSummary(self):
+        """
+        load amounts for each transaction type,
+        """
+
+        for trxType in self.bkfolder.transactionTypes():
+            typeSummary = {}
+            # go throught each category under this type.
+            for category in self.bkfolder.getCategories(trxType):
+                # set the initial value here to hold the spot for no 
+                # transaction catetories.
+                categorySummary = {'subtotal' : 0.0, 'gst' : 0.0, 'pst' : 0.0}
+
+                # search for all transaction under this category.
+                query = {
+                    'transactionDate' : getYearQuery(int(self.year)),
+                    'transactionType' : trxType,
+                    'transactionCategory' : category
+                    }
+                trxs = self.bkfolder.searchTransactions(query)
+                for trx in trxs:
+                    transaction = trx.getObject()
+                    categorySummary['subtotal'] += transaction.subtotal()
+                    categorySummary['gst'] += transaction.gst()
+                    categorySummary['pst'] += transaction.pst()
+                # add to type summary.
+                typeSummary[category] = categorySummary
+            # add to year summary.
+            self.yearSummary[trxType] = typeSummary
+
+    # return type summary for this year.
+    def getTypeSummary(self, trxType):
+        """
+        type summary includes subtotal, gst, pst.
+        """
+
+        self.loadYearSummary()
+
+        summary = {'subtotal':0.0, 'gst':0.0, 'pst':0.0}
+        for categorySummary in self.yearSummary[trxType].values():
+           summary['subtotal'] += categorySummary['subtotal']
+           summary['gst'] += categorySummary['gst']
+           summary['pst'] += categorySummary['pst']
+
+        return summary
+
+    # return category summary for the type and category.
+    def getCategorySummary(self, trxType, category):
+        """
+        category summary
+        """
+
+        return self.yearSummary[trxType][category]
