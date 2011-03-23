@@ -117,3 +117,5 @@ Now we can save it.
     True
     >>> browser.url
     'http://nohost/plone/test-bookkeeping/tx1/'
+
+Make sure the links are available.

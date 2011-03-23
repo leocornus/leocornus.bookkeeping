@@ -10,14 +10,15 @@
   <property name="content_meta_type">BKTransaction</property>
   <property name="product">leocornus.bookkeeping</property>
   <property name="factory">addBKTransaction</property>
-  <property name="immediate_view">base_view</property>
+  <property name="immediate_view">trx_default_view</property>
   <property name="global_allow">False</property>
   <property name="filter_content_types">True</property>
   <property name="allowed_content_types">
   </property>
   <property name="allow_discussion">False</property>
-  <property name="default_view">base_view</property>
+  <property name="default_view">trx_default_view</property>
   <property name="view_methods">
+    <element value="trx_default_view"/>
     <element value="base_view"/>
   </property>
 

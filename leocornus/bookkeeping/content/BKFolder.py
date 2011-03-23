@@ -163,6 +163,13 @@ class BKFolder(ATBTreeFolder):
 
         return DisplayList(retList)
 
+    security.declarePublic(permissions.View, 'getBaseUrl')
+    def getBaseUrl(self):
+        """
+        return the url for this folder.
+        """
+        return '/'.join(self.getPhysicalPath())
+
     security.declarePublic(permissions.View, 'searchTransactions')
     def searchTransactions(self, criteria=None, **kwargs):
         """

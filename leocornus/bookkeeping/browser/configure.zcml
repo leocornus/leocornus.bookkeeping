@@ -32,5 +32,12 @@
      permission="zope2.View"
   />
 
-
+  <!-- the category view for bookkeeping -->
+  <browser:page
+     name="trx_default_view"
+     for="leocornus.bookkeeping.interface.IBKTransaction"
+     class=".trxviews.DefaultView"
+     template="trx_default.pt"
+     permission="zope2.View"
+  />
 </configure>

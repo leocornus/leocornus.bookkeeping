@@ -36,22 +36,22 @@ class DefaultView(BrowserView):
         year = self.transaction.transactionDate().year()
         return str(year)
 
-    def getBaseUrl(self):
-        
-        return '/'.join(self.transaction.getParentNode().getPhysicalPath())
-
     # retrun the the url for year view.
     def getYearViewUrl(self):
         """
         This URL will load the year view for all transactions.
         """
 
-        return self.getBaseUrl() + '/bk_year_view?year=' + self.getYear() 
+        return self.transaction.getBaseUrl() + '/bk_year_view?year=' + self.getYear() 
 
     def getCategoryViewUrl(self):
 
-        url = self.getBaseUrl()
+        url = self.transaction.getBaseUrl()
         url += '/bk_category_view?year=' + self.getYear() + '&category=' 
         url += self.transaction.transactionCategory() + '&trxtype='
         url += self.transaction.transactionType()
         return url 
+
+    def getAddTrxUrl(self):
+
+        return self.transaction.getBaseUrl() + "/createObject?type_name=BKTransaction"
