@@ -23,6 +23,7 @@
     <element value="Topic"/>
     <element value="File" />
     <element value="Image" />
+    <element value="Folder" />
   </property>
   <property name="allow_discussion">False</property>
   <property name="default_view">bk_default_view</property>

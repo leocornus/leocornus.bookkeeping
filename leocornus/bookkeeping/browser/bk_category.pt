@@ -53,18 +53,18 @@
         tal:attributes="class python: oddrow and 'odd' or 'even'">
       <td><span tal:replace="transaction/date"/></td>
       <td><a href="#" tal:attributes="href transaction/editUrl"><span tal:replace="transaction/title"/></a></td>
-      <td><span tal:replace="summary/subtotal"/></td>
-      <td><span tal:replace="summary/gst"/></td>
-      <td><span tal:replace="summary/pst"/></td>
-      <td><strong><span tal:replace="python: sum(summary.values())"/></strong></td>
+      <td><span tal:replace="python: view.monetary(summary['subtotal'])"/></td>
+      <td><span tal:replace="python: view.monetary(summary['gst'])"/></td>
+      <td><span tal:replace="python: view.monetary(summary['pst'])"/></td>
+      <td><strong><span tal:replace="python: view.monetary(sum(summary.values()))"/></strong></td>
     </tr>
     </tal:block>
     <tr>
       <td colspan="2" align="right"><strong>Total:</strong></td>
-      <td><strong><span tal:replace="view/categoryTotal/subtotal"/></strong></td>
-      <td><strong><span tal:replace="view/categoryTotal/gst"/></strong></td>
-      <td><strong><span tal:replace="view/categoryTotal/pst"/></strong></td>
-      <td><strong><span tal:replace="python: sum(view.categoryTotal.values())"/></strong></td>
+      <td><strong><span tal:replace="python: view.monetary(view.categoryTotal['subtotal'])"/></strong></td>
+      <td><strong><span tal:replace="python: view.monetary(view.categoryTotal['gst'])"/></strong></td>
+      <td><strong><span tal:replace="python: view.monetary(view.categoryTotal['pst'])"/></strong></td>
+      <td><strong><span tal:replace="python: view.monetary(sum(view.categoryTotal.values()))"/></strong></td>
     </tr>
   </tbody></table>
 

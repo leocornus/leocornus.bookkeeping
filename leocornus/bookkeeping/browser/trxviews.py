@@ -7,13 +7,13 @@ general view adapters for transaction.
 
 from Acquisition import aq_inner
 
-from Products.Five.browser import BrowserView
+from leocornus.bookkeeping.browser.base import BaseView
 
 __author__ = "Sean Chen"
 __email__ = "sean.chen@leocorn.com"
 
 # the default view for bookkeeping base folder.
-class DefaultView(BrowserView):
+class DefaultView(BaseView):
     """
     The default view for a bookkeeping, which will provide a quick
     summary for all transations by year and transaction type.
