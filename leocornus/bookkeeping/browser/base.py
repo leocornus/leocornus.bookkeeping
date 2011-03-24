@@ -28,6 +28,6 @@ class BaseView(BrowserView):
         format the given number to monetary format
         """
 
-        # set to current default local.
-        locale.setlocale(locale.LC_ALL, '')
+        # set to locale to en_CA for monetary.
+        locale.setlocale(locale.LC_MONETARY, 'en_CA.UTF-8')
         return locale.format('%.*f', (place, number), True)

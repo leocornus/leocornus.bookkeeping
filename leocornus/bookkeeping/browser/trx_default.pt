@@ -51,7 +51,7 @@
       <td><span tal:replace="here/subtotal"/></td>
       <td><span tal:replace="here/gst"/></td>
       <td><span tal:replace="here/pst"/></td>
-      <td><strong><span tal:replace="here/transactionTotal"/></strong></td>
+      <td><strong><span tal:replace="python: view.monetary(here.transactionTotal())"/></strong></td>
     </tr>
   </tbody></table>
 
