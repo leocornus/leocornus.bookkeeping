@@ -27,13 +27,9 @@
 
   <div tal:replace="structure provider:plone.abovecontentbody" />
 
-  <h3>
-    <a href="bk_default_view">Overall Summary</a> | 
-    <a href="#" tal:attributes="href python: 'bk_year_view?year=' + view.year">
-      <span tal:replace="view/year"/> Summary
-    </a> || 
-    <a href="createObject?type_name=BKTransaction">Add Transaction</a>
-  </h3>
+  <a href="bk_default_view"><input class="standalone" type="button" value="Overall Summary" /></a> 
+  <a href="#" tal:attributes="href python: 'bk_year_view?year=' + view.year"><input class="standalone" type="button" value="Year Summary" /></a>
+  <a href="createObject?type_name=BKTransaction"><input class="standalone" type="button" value="Add Transaction" /></a>
 
   <h3>Transactions List for Category [<span tal:replace="python: view.trxType + ':' + view.category"/>] 
     on Year [<span tal:replace="python: view.year"/>]</h3>

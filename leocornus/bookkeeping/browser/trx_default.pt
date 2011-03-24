@@ -27,7 +27,12 @@
 
   <div tal:replace="structure provider:plone.abovecontentbody" />
 
-  <h3>
+  <a href="#" tal:attributes="href here/getBaseUrl" ><input class="standalone" type="button" value="Overall Summary" /></a> 
+  <a href="#" tal:attributes="href view/getYearViewUrl"><input class="standalone" type="button" value="Year Summary" /></a>
+  <a href="#" tal:attributes="href view/getCategoryViewUrl"><input class="standalone" type="button" value="Category Summary" /></a>
+  <a href="#" tal:attributes="href view/getAddTrxUrl"><input class="standalone" type="button" value="Add Transaction" /></a>
+
+ <h3>
     <a href="#" tal:attributes="href here/getBaseUrl">Overall Summary</a> | 
     <a href="#" tal:attributes="href view/getYearViewUrl">
       <span tal:replace="view/getYear"/> Summary

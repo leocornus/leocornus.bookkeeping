@@ -27,9 +27,7 @@
 
   <div tal:replace="structure provider:plone.abovecontentbody" />
 
-  <h3>
-    <a href="createObject?type_name=BKTransaction">Add Transaction</a>
-  </h3>
+  <a href="createObject?type_name=BKTransaction"><input class="standalone" type="button" value="Add Transaction" /></a>
 
   <h3>Quick Summary By Year</h3>
   <table class='listing'><tbody>
