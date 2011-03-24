@@ -145,11 +145,34 @@ class BKFolder(ATBTreeFolder):
 
         categories = []
         for each in self.transactionCategories():
-            tType, category = each.split(':')
+            try:
+                tType, category = each.split(':')
+            except ValueError:
+                # this category has business percentage specified.
+                tType, category, bp = each.split(':')
+
             if (tType == transactionType):
                 categories.append(category) 
 
         return categories
+
+    security.declareProtected(permissions.View, 'getCategoryBuzPercent')
+    def getCategoryBuzPercent(self, transactionType, category):
+        """
+        return the business percentage for the given category.
+        default is 100
+        """
+
+        theCategory = transactionType + ':' + category
+        if theCategory in self.transactionCategories():
+            # business percentage not specified, return default.
+            bp = 100
+        else:
+            for each in self.transactionCategories():
+                if each.startswith(theCategory + ':'):
+                    a, bp = each.split(theCategory + ':')
+
+        return bp
 
     security.declarePublic('vocabularyTrxTypes')
     def vocabularyTrxTypes(self):

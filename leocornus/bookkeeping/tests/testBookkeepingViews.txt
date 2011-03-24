@@ -73,7 +73,7 @@ Now we need create a Bookkeeping base folder.
     >>> browser.getControl(name='title').value = 'test bookkeeping'
     >>> browser.getControl(name='description').value = 'doctest bookkeeping views'
     >>> browser.getControl(name='bk_transaction_types:lines').value = 'Expense\nIncome'
-    >>> browser.getControl(name='bk_transaction_categories:lines').value = 'Expense:Gas\nIncome:Sallary'
+    >>> browser.getControl(name='bk_transaction_categories:lines').value = 'Expense:Gas\nExpense:Lunch:50\nIncome:Sallary'
     >>> browser.getControl('Save').click()
 
 We should have a BKFolder created.
