@@ -56,11 +56,26 @@
     </tr>
     </tal:block>
     <tr>
-      <td colspan="2" align="right"><strong>Total:</strong></td>
-      <td><strong><span tal:replace="python: view.monetary(view.categoryTotal['subtotal'])"/></strong></td>
-      <td><strong><span tal:replace="python: view.monetary(view.categoryTotal['gst'])"/></strong></td>
-      <td><strong><span tal:replace="python: view.monetary(view.categoryTotal['pst'])"/></strong></td>
-      <td><strong><span tal:replace="python: view.monetary(sum(view.categoryTotal.values()))"/></strong></td>
+      <td colspan="2" align="right"><strong>
+        Total:<br/>
+        (<span tal:replace="view/categoryBp"/>%)
+      </strong></td>
+      <td><strong>
+        <span tal:replace="python: view.monetary(view.categoryTotal['subtotal'])"/><br/>
+        (<span tal:replace="python: view.monetary(view.categoryBpTotal['subtotal'])"/>)
+      </strong></td>
+      <td><strong>
+        <span tal:replace="python: view.monetary(view.categoryTotal['gst'])"/><br/>
+        (<span tal:replace="python: view.monetary(view.categoryBpTotal['gst'])"/>)
+      </strong></td>
+      <td><strong>
+        <span tal:replace="python: view.monetary(view.categoryTotal['pst'])"/><br/>
+        (<span tal:replace="python: view.monetary(view.categoryBpTotal['pst'])"/>)
+      </strong></td>
+      <td><strong>
+        <span tal:replace="python: view.monetary(sum(view.categoryTotal.values()))"/><br/>
+        (<span tal:replace="python: view.monetary(sum(view.categoryBpTotal.values()))"/>)
+      </strong></td>
     </tr>
   </tbody></table>
 

@@ -172,7 +172,7 @@ class BKFolder(ATBTreeFolder):
                 if each.startswith(theCategory + ':'):
                     a, bp = each.split(theCategory + ':')
 
-        return bp
+        return int(bp)
 
     security.declarePublic('vocabularyTrxTypes')
     def vocabularyTrxTypes(self):

@@ -40,10 +40,12 @@
     </tr>
     <tr>
       <tal:block tal:repeat="trxType here/transactionTypes">
-        <td tal:define="typeSummary python: view.getTypeSummary(trxType);">
+        <td tal:define="typeSummary python: view.getTypeSummary(trxType);
+                        typeBpSummary python: view.getTypeBpSummary(trxType);">
 <table class='listing'><tbody>
   <tr>
     <th>Category</th>
+    <th>BP</th>
     <th>Subtotal</th>
     <th>GST/HST</th>
     <th>PST</th>
@@ -51,22 +53,49 @@
   </tr>
   <tal:block tal:repeat="category python: here.getCategories(trxType)">
     <tr tal:define="oddrow repeat/category/odd;
+                    categoryBp python: view.getCategoryBuzPercent(trxType, category);
                     categorySummary python: view.getCategorySummary(trxType, category);
+                    categoryBpSummary python: view.getCategoryBpSummary(trxType, category);
                     categoryUrl python: view.getCategoryViewUrl(trxType, category)"
         tal:attributes="class python: oddrow and 'odd' or 'even'">
       <td><a href='#' tal:attributes='href categoryUrl'><span tal:replace="category"/></a></td>
-      <td><span tal:replace="python: view.monetary(categorySummary['subtotal'])"/></td>
-      <td><span tal:replace="python: view.monetary(categorySummary['gst'])"/></td>
-      <td><span tal:replace="python: view.monetary(categorySummary['pst'])"/></td>
-      <td><strong><span tal:replace="python: view.monetary(sum(categorySummary.values()))"/></strong></td>
+      <td><span tal:replace="categoryBp"/>%</td>
+      <td>
+        <span tal:replace="python: view.monetary(categorySummary['subtotal'])"/><br/>
+        (<span tal:replace="python: view.monetary(categoryBpSummary['subtotal'])"/>)
+      </td>
+      <td>
+        <span tal:replace="python: view.monetary(categorySummary['gst'])"/><br/>
+        (<span tal:replace="python: view.monetary(categoryBpSummary['gst'])"/>)
+      </td>
+      <td>
+        <span tal:replace="python: view.monetary(categorySummary['pst'])"/><br/>
+        (<span tal:replace="python: view.monetary(categoryBpSummary['pst'])"/>)
+      </td>
+      <td><strong>
+        <span tal:replace="python: view.monetary(sum(categorySummary.values()))"/><br/>
+        (<span tal:replace="python: view.monetary(sum(categoryBpSummary.values()))"/>)
+      </strong></td>
     </tr>
   </tal:block>
   <tr>
-    <td align="right"><strong>Total:</strong></td>
-    <td><strong><span tal:replace="python: view.monetary(typeSummary['subtotal'])"/></strong></td>
-    <td><strong><span tal:replace="python: view.monetary(typeSummary['gst'])"/></strong></td>
-    <td><strong><span tal:replace="python: view.monetary(typeSummary['pst'])"/></strong></td>
-    <td><strong><span tal:replace="python: view.monetary(sum(typeSummary.values()))"/></strong></td>
+    <td colspan="2" align="right"><strong>Total:</strong></td>
+    <td><strong>
+      <span tal:replace="python: view.monetary(typeSummary['subtotal'])"/><br/>
+      (<span tal:replace="python: view.monetary(typeBpSummary['subtotal'])"/>)
+    </strong></td>
+    <td><strong>
+      <span tal:replace="python: view.monetary(typeSummary['gst'])"/><br/>
+      (<span tal:replace="python: view.monetary(typeBpSummary['gst'])"/>)
+    </strong></td>
+    <td><strong>
+      <span tal:replace="python: view.monetary(typeSummary['pst'])"/><br/>
+      (<span tal:replace="python: view.monetary(typeBpSummary['pst'])"/>)
+    </strong></td>
+    <td><strong>
+      <span tal:replace="python: view.monetary(sum(typeSummary.values()))"/><br/>
+      (<span tal:replace="python: view.monetary(sum(typeBpSummary.values()))"/>)
+    </strong></td>
   </tr>
 </tbody></table>
         </td>

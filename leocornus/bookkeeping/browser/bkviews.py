@@ -116,11 +116,14 @@ class YearView(BaseView):
 
         for trxType in self.bkfolder.transactionTypes():
             typeSummary = {}
+            # the summary for business business percentage.
+            typeSummaryBp = {}
             # go throught each category under this type.
             for category in self.bkfolder.getCategories(trxType):
                 # set the initial value here to hold the spot for no 
                 # transaction catetories.
                 categorySummary = {'subtotal' : 0.0, 'gst' : 0.0, 'pst' : 0.0}
+                categoryBp = self.getCategoryBuzPercent(trxType, category)
 
                 # search for all transaction under this category.
                 query = {
@@ -129,15 +132,32 @@ class YearView(BaseView):
                     'transactionCategory' : category
                     }
                 trxs = self.bkfolder.searchTransactions(query)
+                # calculate the summary.
                 for trx in trxs:
                     transaction = trx.getObject()
                     categorySummary['subtotal'] += transaction.subtotal()
                     categorySummary['gst'] += transaction.gst()
                     categorySummary['pst'] += transaction.pst()
+
                 # add to type summary.
                 typeSummary[category] = categorySummary
+                # preparing the BP summary.
+                categorySummaryBp = {}
+                categorySummaryBp['subtotal'] = categorySummary['subtotal'] * categoryBp / 100
+                categorySummaryBp['gst'] = categorySummary['gst'] * categoryBp / 100
+                categorySummaryBp['pst'] = categorySummary['pst'] * categoryBp / 100
+                typeSummaryBp[category] = categorySummaryBp
             # add to year summary.
             self.yearSummary[trxType] = typeSummary
+            self.yearSummary[trxType + 'bp'] = typeSummaryBp
+
+    # return the category business percentage.
+    def getCategoryBuzPercent(self, trxType, category):
+        """
+        return the 
+        """
+
+        return self.bkfolder.getCategoryBuzPercent(trxType, category)
 
     # return type summary for this year.
     def getTypeSummary(self, trxType):
@@ -155,13 +175,35 @@ class YearView(BaseView):
 
         return summary
 
-    # return category summary for the type and category.
+    # return type summary for this year.
+    def getTypeBpSummary(self, trxType):
+        """
+        type summary includes subtotal, gst, pst.
+        """
+
+        summary = {'subtotal':0.0, 'gst':0.0, 'pst':0.0}
+        for categorySummary in self.yearSummary[trxType + 'bp'].values():
+           summary['subtotal'] += categorySummary['subtotal']
+           summary['gst'] += categorySummary['gst']
+           summary['pst'] += categorySummary['pst']
+
+        return summary
+
+   # return category summary for the type and category.
     def getCategorySummary(self, trxType, category):
         """
         category summary
         """
 
         return self.yearSummary[trxType][category]
+
+    # return category summary for the type and category.
+    def getCategoryBpSummary(self, trxType, category):
+        """
+        category summary business percentage
+        """
+
+        return self.yearSummary[trxType + 'bp'][category]
 
 # The year view.
 class CategoryView(BaseView):
@@ -185,6 +227,8 @@ class CategoryView(BaseView):
         # the root folder of bookkeeping.
         self.bkfolder = aq_inner(self.context)
         self.categoryTotal = {'subtotal':0.0, 'gst':0.0, 'pst':0.0}
+        self.categoryBp = self.bkfolder.getCategoryBuzPercent(self.trxType, self.category)
+        self.categoryBpTotal = {}
 
     # return all transactions for this category.
     def getTransactions(self):
@@ -214,6 +258,10 @@ class CategoryView(BaseView):
             self.categoryTotal['subtotal'] += obj.subtotal()
             self.categoryTotal['gst'] += obj.gst()
             self.categoryTotal['pst'] += obj.pst()
+            # calculate BP total.
+            self.categoryBpTotal['subtotal'] = self.categoryTotal['subtotal'] * self.categoryBp / 100
+            self.categoryBpTotal['gst'] = self.categoryTotal['gst'] * self.categoryBp / 100
+            self.categoryBpTotal['pst'] = self.categoryTotal['pst'] * self.categoryBp / 100
 
             # add to transactions.
             transactions.append(transaction)
