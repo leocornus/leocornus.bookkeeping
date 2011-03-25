@@ -21,8 +21,8 @@ __email__ = "sean.chen@leocorn.com"
 def test_suite():
     suites = (
         DocTestSuite('leocornus.bookkeeping.browser.base'),
-        #ZopeDocTestSuite('Products.CMFPlone.CatalogTool',
-        #                 test_class=PloneTestCase.FunctionalTestCase),
+        ZopeDocTestSuite('leocornus.bookkeeping.browser.bkviews',
+                         test_class=BookkeepingFunctionalTestCase),
         #ZopeDocTestSuite('Products.CMFPlone.PloneTool',
         #                 test_class=PloneTestCase.FunctionalTestCase),
         #DocTestSuite('Products.CMFPlone.TranslationServiceTool'),

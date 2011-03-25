@@ -57,7 +57,6 @@ class BookkeepingTestCase(PloneTestCase.PloneTestCase, BookkeepingTestUtils):
     def afterSetUp(self):
 
         self.loginAsPortalOwner()
-        self.acl_users = self.portal.acl_users
 
 class BookkeepingFunctionalTestCase(PloneTestCase.FunctionalTestCase,
                                     BookkeepingTestUtils):

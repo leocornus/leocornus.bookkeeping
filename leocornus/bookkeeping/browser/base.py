@@ -7,6 +7,8 @@ The base view class for all browser views in bookkeeping.
 
 import locale
 from datetime import datetime
+from decimal import Decimal
+from decimal import ROUND_HALF_UP
 
 from Acquisition import aq_inner
 from DateTime import DateTime
@@ -23,6 +25,22 @@ class BaseView(BrowserView):
     providing some utilities for browser view.
     """
 
+    def roundFixedExponent(self, number):
+        """
+        this will round half up,
+
+        >>> view = BaseView('context', 'request')
+        >>> view.roundFixedExponent(123.45678)
+        '123.46'
+        >>> view.roundFixedExponent(123.45456)
+        '123.45'
+        """
+
+        if not isinstance(number, str):
+            number = str(number)
+
+        return str(Decimal(number).quantize(Decimal('.01'), ROUND_HALF_UP))
+
     def monetary(self, number, place=2):
         """
         format the given number to monetary format
@@ -33,12 +51,18 @@ class BaseView(BrowserView):
         '12,345.56'
         >>> view.monetary(123.45)
         '123.45'
+
+        it shoul suport string as input too!
+        >>> view.monetary('12345.56')
+        '12,345.56'
+        >>> view.monetary('123.45')
+        '123.45'
         """
 
         # set to locale to en_CA for monetary.
         #locale.setlocale(locale.LC_MONETARY, 'en_CA.UTF-8')
         #return locale.format('%.*f', (place, number), True)
-        return self.splitThousands(number)
+        return self.splitThousands(self.roundFixedExponent(number))
 
     def splitThousands(self, s, tSep=',', dSep='.'):
         """

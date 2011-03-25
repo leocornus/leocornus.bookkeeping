@@ -82,6 +82,22 @@ class YearView(BaseView):
     This view will provide the summary by category for the specified year. 
     It will show one column for each transaction type.  For each category, 
     the subtotal, gst, pst and total will be list.
+
+    preparing some data for testing... Suppose the there is a default Plone
+    site is binding to self.portal
+
+    create a BKFolder object as the context.
+    >>> self.portal.invokeFactory('BKFolder', id='bk',
+    ...     title='doctesting in python code',
+    ...     bk_transaction_types=('Expense'),
+    ...     bk_transaction_categories=(
+    ...         'Expense:Parking', 'Expense:Lunch:50', 'Expense:Gas:80'
+    ...     )
+    ... )
+    'bk'
+    >>> self.bk = getattr(self.portal, 'bk')
+    >>> self.bk.title
+    u'doctesting in python code'
     """
     
     # initializing
@@ -112,6 +128,18 @@ class YearView(BaseView):
     def loadYearSummary(self):
         """
         load amounts for each transaction type,
+
+        we should be able to use the object from the doc string in class
+        level.
+
+        Can NOT understand why we need import YearView?
+        >>> from leocornus.bookkeeping.browser.bkviews import YearView
+        >>> from zope.publisher.browser import TestRequest
+        
+        >>> request = TestRequest(year='2010')
+        >>> yearView = YearView(self.bk, request)
+        >>> yearView.bkfolder.title
+        u'doctesting in python code'
         """
 
         for trxType in self.bkfolder.transactionTypes():
