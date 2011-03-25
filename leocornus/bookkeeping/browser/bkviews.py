@@ -3,6 +3,23 @@
 
 """
 general view adapters for bookkeeping.
+
+preparing some data for testing... Suppose the there is a default Plone
+site is binding to self.portal
+ 
+create a BKFolder object as the context.
+>>> self.portal.invokeFactory('BKFolder', id='bk',
+...     title='doctesting in python code',
+...     bk_transaction_types=('Expense'),
+...     bk_transaction_categories=(
+...         'Expense:Parking', 'Expense:Lunch:50', 'Expense:Gas:80'
+...     )
+... )
+'bk'
+>>> self.bk = getattr(self.portal, 'bk')
+>>> self.bk.title
+u'doctesting in python code'
+ 
 """
 
 from datetime import datetime
@@ -83,23 +100,22 @@ class YearView(BaseView):
     It will show one column for each transaction type.  For each category, 
     the subtotal, gst, pst and total will be list.
 
-    preparing some data for testing... Suppose the there is a default Plone
-    site is binding to self.portal
+    we should be able to use the object from the doc string in class
+    level.
 
-    create a BKFolder object as the context.
-    >>> self.portal.invokeFactory('BKFolder', id='bk',
-    ...     title='doctesting in python code',
-    ...     bk_transaction_types=('Expense'),
-    ...     bk_transaction_categories=(
-    ...         'Expense:Parking', 'Expense:Lunch:50', 'Expense:Gas:80'
-    ...     )
-    ... )
-    'bk'
-    >>> self.bk = getattr(self.portal, 'bk')
-    >>> self.bk.title
+    Can NOT understand why we need import YearView?
+    >>> from leocornus.bookkeeping.browser.bkviews import YearView
+    >>> from zope.publisher.browser import TestRequest
+
+    Preparing a testing request with year parameter.
+
+    >>> request = TestRequest(year='2010')
+    >>> self.yearView = YearView(self.bk, request)
+    >>> self.yearView.bkfolder.title
     u'doctesting in python code'
+ 
     """
-    
+
     # initializing
     def __init__(self, context, request):
         """
@@ -120,6 +136,10 @@ class YearView(BaseView):
     def getCategoryViewUrl(self, trxType, category):
         """
         This URL will load the category view for all transactions.
+
+        >>> self.yearView.getCategoryViewUrl('TestType', 'TestCategory')
+        'bk_category_view?year=2010&category=TestCategory&trxtype=TestType'
+
         """
 
         return 'bk_category_view?year=' + self.year + '&category=' + category + '&trxtype=' + trxType
@@ -129,17 +149,12 @@ class YearView(BaseView):
         """
         load amounts for each transaction type,
 
-        we should be able to use the object from the doc string in class
-        level.
+        can we use the yearView directly? -- Yes!
 
-        Can NOT understand why we need import YearView?
-        >>> from leocornus.bookkeeping.browser.bkviews import YearView
-        >>> from zope.publisher.browser import TestRequest
-        
-        >>> request = TestRequest(year='2010')
-        >>> yearView = YearView(self.bk, request)
-        >>> yearView.bkfolder.title
-        u'doctesting in python code'
+        #>>> self.yearView.loadYearSummary()
+        #>>> len(self.yearView.yearSummary)
+        #2
+
         """
 
         for trxType in self.bkfolder.transactionTypes():
@@ -182,7 +197,17 @@ class YearView(BaseView):
     # return the category business percentage.
     def getCategoryBuzPercent(self, trxType, category):
         """
-        return the 
+        return the business percentage for ghe given type and category.
+
+        testing with the BKFolder created on top of this file (package).
+
+        >>> self.yearView.getCategoryBuzPercent('Expense', 'Lunch')
+        50
+        >>> self.yearView.getCategoryBuzPercent('Expense', 'Gas')
+        80
+        >>> self.yearView.getCategoryBuzPercent('Expense', 'Parking')
+        100
+
         """
 
         return self.bkfolder.getCategoryBuzPercent(trxType, category)
