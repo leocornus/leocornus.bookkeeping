@@ -281,7 +281,7 @@ class CategoryView(BaseView):
         self.bkfolder = aq_inner(self.context)
         self.categoryTotal = {'subtotal':0.0, 'gst':0.0, 'pst':0.0}
         self.categoryBp = self.bkfolder.getCategoryBuzPercent(self.trxType, self.category)
-        self.categoryBpTotal = {}
+        self.categoryBpTotal = {'subtotal':0.0, 'gst':0.0, 'pst':0.0}
 
     # return all transactions for this category.
     def getTransactions(self):
