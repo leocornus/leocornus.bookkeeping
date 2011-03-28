@@ -54,6 +54,7 @@
   <tal:block tal:repeat="category python: here.getCategories(trxType)">
     <tr tal:define="oddrow repeat/category/odd;
                     categoryBp python: view.getCategoryBuzPercent(trxType, category);
+                    showBp python: categoryBp != 100;
                     categorySummary python: view.getCategorySummary(trxType, category);
                     categoryBpSummary python: view.getCategoryBpSummary(trxType, category);
                     categoryUrl python: view.getCategoryViewUrl(trxType, category)"
@@ -61,20 +62,28 @@
       <td><a href='#' tal:attributes='href categoryUrl'><span tal:replace="category"/></a></td>
       <td><span tal:replace="categoryBp"/>%</td>
       <td>
-        <span tal:replace="python: view.monetary(categorySummary['subtotal'])"/><br/>
-        (<span tal:replace="python: view.monetary(categoryBpSummary['subtotal'])"/>)
+        <span tal:replace="python: view.monetary(categorySummary['subtotal'])"/>
+        <tal:block tal:condition="showBp">
+          <br/>(<span tal:replace="python: view.monetary(categoryBpSummary['subtotal'])"/>)
+        </tal:block>
       </td>
       <td>
-        <span tal:replace="python: view.monetary(categorySummary['gst'])"/><br/>
-        (<span tal:replace="python: view.monetary(categoryBpSummary['gst'])"/>)
+        <span tal:replace="python: view.monetary(categorySummary['gst'])"/>
+        <tal:block tal:condition="showBp">
+          <br/>(<span tal:replace="python: view.monetary(categoryBpSummary['gst'])"/>)
+        </tal:block>
       </td>
       <td>
-        <span tal:replace="python: view.monetary(categorySummary['pst'])"/><br/>
-        (<span tal:replace="python: view.monetary(categoryBpSummary['pst'])"/>)
+        <span tal:replace="python: view.monetary(categorySummary['pst'])"/>
+        <tal:block tal:condition="showBp">
+          <br/>(<span tal:replace="python: view.monetary(categoryBpSummary['pst'])"/>)
+        </tal:block>
       </td>
       <td><strong>
-        <span tal:replace="python: view.monetary(sum(categorySummary.values()))"/><br/>
-        (<span tal:replace="python: view.monetary(sum(categoryBpSummary.values()))"/>)
+        <span tal:replace="python: view.monetary(sum(categorySummary.values()))"/>
+        <tal:block tal:condition="showBp">
+          <br/>(<span tal:replace="python: view.monetary(sum(categoryBpSummary.values()))"/>)
+        </tal:block>
       </strong></td>
     </tr>
   </tal:block>

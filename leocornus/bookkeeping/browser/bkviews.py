@@ -39,6 +39,12 @@ class DefaultView(BaseView):
     """
     The default view for a bookkeeping, which will provide a quick
     summary for all transations by year and transaction type.
+
+    >>> from leocornus.bookkeeping.browser.bkviews import DefaultView
+
+    >>> self.defaultView = DefaultView(self.bk, 'request')
+    >>> self.defaultView.bkfolder.title == self.bk.title
+    True
     """
 
     # we need adapt Request too.
@@ -54,6 +60,9 @@ class DefaultView(BaseView):
         """
         preparing a list of years for showing the summary.  We will start
         from year 2010 and end at current year.
+
+        >>> self.defaultView.getYears()
+        [2010, 2011]
         """
 
         years = [2010]
@@ -67,6 +76,11 @@ class DefaultView(BaseView):
     def getYearViewUrl(self, year):
         """
         This URL will load the year view for all transactions.
+
+        >>> self.defaultView.getYearViewUrl(2010)
+        'bk_year_view?year=2010'
+        >>> self.defaultView.getYearViewUrl(2011)
+        'bk_year_view?year=2011'
         """
 
         return 'bk_year_view?year=' + str(year)
@@ -150,6 +164,11 @@ class YearView(BaseView):
         load amounts for each transaction type,
 
         can we use the yearView directly? -- Yes!
+
+        When we try to load year amount from doctest, we alway got 
+        ConnectionStateError from method searchTransactions.  The error is 
+        raised when we try to get the physical path for the bkfolder.  We 
+        need test this in a functional doctest text file.
 
         #>>> self.yearView.loadYearSummary()
         #>>> len(self.yearView.yearSummary)
