@@ -57,7 +57,7 @@
     </tal:block>
     <tr>
       <td colspan="2" align="right"><strong>
-        Total:<br/>
+        <span tal:replace="python len(view.transactions())"/> Transaction(s), Total:<br/>
         (<span tal:replace="view/categoryBp"/>%)
       </strong></td>
       <td><strong>
