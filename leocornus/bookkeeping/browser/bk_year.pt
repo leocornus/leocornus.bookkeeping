@@ -60,7 +60,7 @@
                     categoryUrl python: view.getCategoryViewUrl(trxType, category)"
         tal:attributes="class python: oddrow and 'odd' or 'even'">
       <td><a href='#' tal:attributes='href categoryUrl'><span tal:replace="category"/></a></td>
-      <td><span tal:replace="categoryBp"/>%</td>
+      <td align="middle"><span tal:replace="categoryBp"/>%</td>
       <td>
         <span tal:replace="python: view.monetary(categorySummary['subtotal'])"/>
         <tal:block tal:condition="showBp">
