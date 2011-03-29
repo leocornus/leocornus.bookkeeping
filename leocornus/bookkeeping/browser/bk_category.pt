@@ -58,34 +58,34 @@
     </tr>
     </tal:block>
     <tr>
-      <td colspan="3" align="right"><strong>
+      <th colspan="3" align="right"><strong>
         Total:
         <br/>BP (<span tal:replace="view/categoryBp"/>%):
-      </strong></td>
-      <td><strong>
+      </strong></th>
+      <th><strong>
         <span tal:replace="python: view.monetary(view.categoryTotal['subtotal'])"/>
         <tal:block tal:condition="python: view.categoryBp != 100">
           <br/>(<span tal:replace="python: view.monetary(view.categoryBpTotal['subtotal'])"/>)
         </tal:block>
-      </strong></td>
-      <td><strong>
+      </strong></th>
+      <th><strong>
         <span tal:replace="python: view.monetary(view.categoryTotal['gst'])"/>
         <tal:block tal:condition="python: view.categoryBp != 100">
           <br/>(<span tal:replace="python: view.monetary(view.categoryBpTotal['gst'])"/>)
         </tal:block>
-      </strong></td>
-      <td><strong>
+      </strong></th>
+      <th><strong>
         <span tal:replace="python: view.monetary(view.categoryTotal['pst'])"/>
         <tal:block tal:condition="python: view.categoryBp != 100">
           <br/>(<span tal:replace="python: view.monetary(view.categoryBpTotal['pst'])"/>)
         </tal:block>
-      </strong></td>
-      <td><strong>
+      </strong></th>
+      <th><strong>
         <span tal:replace="python: view.monetary(sum(view.categoryTotal.values()))"/>
         <tal:block tal:condition="python: view.categoryBp != 100">
           <br/>(<span tal:replace="python: view.monetary(sum(view.categoryBpTotal.values()))"/>)
         </tal:block>
-      </strong></td>
+      </strong></th>
     </tr>
   </tbody></table>
 

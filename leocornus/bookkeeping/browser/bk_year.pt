@@ -88,23 +88,23 @@
     </tr>
   </tal:block>
   <tr>
-    <td colspan="2" align="right"><strong>Total:</strong></td>
-    <td><strong>
+    <th colspan="2" align="right"><strong>Total:</strong></th>
+    <th><strong>
       <span tal:replace="python: view.monetary(typeSummary['subtotal'])"/><br/>
       (<span tal:replace="python: view.monetary(typeBpSummary['subtotal'])"/>)
-    </strong></td>
-    <td><strong>
+    </strong></th>
+    <th><strong>
       <span tal:replace="python: view.monetary(typeSummary['gst'])"/><br/>
       (<span tal:replace="python: view.monetary(typeBpSummary['gst'])"/>)
-    </strong></td>
-    <td><strong>
+    </strong></th>
+    <th><strong>
       <span tal:replace="python: view.monetary(typeSummary['pst'])"/><br/>
       (<span tal:replace="python: view.monetary(typeBpSummary['pst'])"/>)
-    </strong></td>
-    <td><strong>
+    </strong></th>
+    <th><strong>
       <span tal:replace="python: view.monetary(sum(typeSummary.values()))"/><br/>
       (<span tal:replace="python: view.monetary(sum(typeBpSummary.values()))"/>)
-    </strong></td>
+    </strong></th>
   </tr>
 </tbody></table>
         </td>
