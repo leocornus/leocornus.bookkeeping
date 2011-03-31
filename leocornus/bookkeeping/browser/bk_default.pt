@@ -56,16 +56,16 @@
         <!-- repeat type for each year -->
         <tal:block tal:repeat="trxType here/transactionTypes">
           <tal:block tal:define="amounts python: view.getAmounts(trxType, year)">
-          <td width="36px">
+          <td align="right" width="36px">
             <span tal:replace="python: view.monetary(amounts[0])"/>
           </td>
-          <td width="36px">
+          <td align="right" width="36px">
             <span tal:replace="python: view.monetary(amounts[1])"/>
           </td>
-          <td width="36px">
+          <td align="right" width="36px">
             <span tal:replace="python: view.monetary(amounts[2])"/>
           </td> 
-          <td width="36px">
+          <td align="right" width="36px">
             <strong><span tal:replace="python: view.monetary(sum(amounts))"/></strong>
           </td>
          </tal:block>

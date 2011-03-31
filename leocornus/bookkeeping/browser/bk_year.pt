@@ -61,25 +61,25 @@
         tal:attributes="class python: oddrow and 'odd' or 'even'">
       <td><a href='#' tal:attributes='href categoryUrl'><span tal:replace="category"/></a></td>
       <td align="middle"><span tal:replace="categoryBp"/>%</td>
-      <td>
+      <td align="right">
         <span tal:replace="python: view.monetary(categorySummary['subtotal'])"/>
         <tal:block tal:condition="showBp">
           <br/>(<span tal:replace="python: view.monetary(categoryBpSummary['subtotal'])"/>)
         </tal:block>
       </td>
-      <td>
+      <td align="right">
         <span tal:replace="python: view.monetary(categorySummary['gst'])"/>
         <tal:block tal:condition="showBp">
           <br/>(<span tal:replace="python: view.monetary(categoryBpSummary['gst'])"/>)
         </tal:block>
       </td>
-      <td>
+      <td align="right">
         <span tal:replace="python: view.monetary(categorySummary['pst'])"/>
         <tal:block tal:condition="showBp">
           <br/>(<span tal:replace="python: view.monetary(categoryBpSummary['pst'])"/>)
         </tal:block>
       </td>
-      <td><strong>
+      <td align="right"><strong>
         <span tal:replace="python: view.monetary(sum(categorySummary.values()))"/>
         <tal:block tal:condition="showBp">
           <br/>(<span tal:replace="python: view.monetary(sum(categoryBpSummary.values()))"/>)
@@ -89,19 +89,19 @@
   </tal:block>
   <tr>
     <th colspan="2" align="right"><strong>Total:</strong></th>
-    <th><strong>
+    <th align="right"><strong>
       <span tal:replace="python: view.monetary(typeSummary['subtotal'])"/><br/>
       (<span tal:replace="python: view.monetary(typeBpSummary['subtotal'])"/>)
     </strong></th>
-    <th><strong>
+    <th align="right"><strong>
       <span tal:replace="python: view.monetary(typeSummary['gst'])"/><br/>
       (<span tal:replace="python: view.monetary(typeBpSummary['gst'])"/>)
     </strong></th>
-    <th><strong>
+    <th align="right"><strong>
       <span tal:replace="python: view.monetary(typeSummary['pst'])"/><br/>
       (<span tal:replace="python: view.monetary(typeBpSummary['pst'])"/>)
     </strong></th>
-    <th><strong>
+    <th align="right"><strong>
       <span tal:replace="python: view.monetary(sum(typeSummary.values()))"/><br/>
       (<span tal:replace="python: view.monetary(sum(typeBpSummary.values()))"/>)
     </strong></th>

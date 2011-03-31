@@ -103,6 +103,26 @@ class TestSearchIndexing(BookkeepingTestCase):
         self.assertEquals(len(self.catalog(transactionDate=year2009,
                                            transactionType='Expense'))
                           , 1)
+        # testing combined search with sort_on
+        year2008to9 = {'query' : [DateTime(2008,1,1,0,0,0), DateTime(2009,12,31,23,59,59)],
+                       'range' : 'min:max'
+                      }
+        # search with the default sort order.
+        results = self.catalog(transactionDate=year2008to9,
+                               transactionType='Expense',
+                               sort_on='transactionDate')
+        self.assertEquals(len(results), 2)
+        self.assertEquals(results[0].id, 'trx2')
+        self.assertEquals(results[1].id, 'trx1')
+        # search with the reversed sort order.
+        results = self.catalog(transactionDate=year2008to9,
+                               transactionType='Expense',
+                               sort_on='transactionDate',
+                               sort_order='reverse')
+        self.assertEquals(len(results), 2)
+        self.assertEquals(results[0].id, 'trx1')
+        self.assertEquals(results[1].id, 'trx2')
+
 
     def testSearchInterface(self):
         # testing the BKFolder's searching interface.
@@ -133,6 +153,29 @@ class TestSearchIndexing(BookkeepingTestCase):
             'transactionCategory' : 'Gas'
             }
         self.assertEquals(len(bk.searchTransactions(query)), 0)
+
+    def testSearchInterfaceSort(self):
+        # testing the BKFolder's searching interface.
+        bk = getattr(self.portal, 'bk')
+        query = {
+            'transactionType' : 'Expense'
+            }
+        rs = bk.searchTransactions(query)
+        self.assertEquals(len(rs), 2)
+        # BKFolder's default sort order is reverse
+        self.assertEquals(rs[0].id, 'trx1')
+        self.assertEquals(rs[1].id, 'trx2')
+
+        # now let's try to specify the sort criteria.
+        query = {
+            'transactionType' : 'Expense',
+            'sort_on' : 'transactionDate'
+            }
+        # this should be default portal sort order.
+        rs = bk.searchTransactions(query)
+        self.assertEquals(len(rs), 2)
+        self.assertEquals(rs[0].id, 'trx2')
+        self.assertEquals(rs[1].id, 'trx1')
 
 def test_suite():
     suite = unittest.TestSuite()

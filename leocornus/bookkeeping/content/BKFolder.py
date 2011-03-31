@@ -225,6 +225,12 @@ class BKFolder(ATBTreeFolder):
             elif v in criteria:
                 query[v] = criteria[v]
 
+        # set the default sort criteria if not been set.
+        if not query.has_key('sort_on'):
+            # default sort criteria: sort on transaction date and reverse.
+            query['sort_on'] = 'transactionDate'
+            query['sort_order'] = 'reverse'
+
         catalog = getToolByName(self, 'portal_catalog')
 
         return catalog.searchResults(query)
