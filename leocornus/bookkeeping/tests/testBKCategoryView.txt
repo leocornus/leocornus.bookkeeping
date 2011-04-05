@@ -1,0 +1,62 @@
+==================================================
+A functional doctest for Bookkeeping Category View
+==================================================
+
+First of all, we need a browser for functional testing.
+
+    >>> from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+    >>> portal_url = self.portal.absolute_url()
+    >>> bk_url = self.bk.absolute_url()
+
+The following is useful when writing and debugging testbrowser tests. It lets
+us see all error messages in the error_log.
+
+    >>> self.portal.error_log._ignored_exceptions = ()
+    >>> browser.handleErrors = False
+
+With that in place, we can go to the portal front page and log in. We will
+do this using the default user from PloneTestCase:
+
+    >>> from Products.PloneTestCase.setup import portal_owner, default_password
+
+    >>> browser.open(portal_url)
+
+We have the login portlet, so let's use that.
+
+    >>> browser.getControl(name='__ac_name').value = portal_owner
+    >>> browser.getControl(name='__ac_password').value = default_password
+    >>> browser.getControl(name='submit').click()
+
+Make sure we are logged in.
+
+    >>> "You are now logged in" in browser.contents
+    True
+
+Being a doctest, we can tell a story here. 
+Now browser to the Bookkeeping folder:
+
+    >>> browser.open(bk_url)
+    >>> browser.url
+    'http://nohost/plone/bk'
+
+add some transactions for testing:
+
+    >>> browser.getLink('Bookkeeping Transaction').click()
+    >>> browser.url
+    'http://nohost/plone/bk/portal_factory/BKTransaction/bkt.../edit'
+    >>> browser.getControl(name='title').value = 'trx one'
+    >>> browser.getControl(name='description').value = 'trx one desc'
+    >>> browser.getControl(name='bk_transaction_type').value = ['Expense']
+    >>> browser.getControl(name='bk_transaction_category').value = ['Parking']
+    >>> browser.getControl(name='bk_transaction_date_year').value = ['2010']
+    >>> browser.getControl(name='bk_transaction_date_month').value = ['02']
+    >>> browser.getControl(name='bk_transaction_date_day').value = ['11']
+    >>> browser.getControl(name='bk_transaction_subtotal').value = '12.34'
+    >>> browser.getControl(name='bk_transaction_gst').value = '1.23'
+    >>> browser.getControl(name='bk_transaction_pst').value = '2.12'
+    >>> browser.getControl('Save').click()
+    >>> browser.url
+    'http://nohost/plone/bk/tx1/'
+
+More transaction records.

@@ -67,3 +67,27 @@ class BookkeepingFunctionalTestCase(PloneTestCase.FunctionalTestCase,
     def afterSetUp(self):
 
         self.loginAsPortalOwner()
+
+class BKFolderFunctionalTestCase(PloneTestCase.FunctionalTestCase,
+                                    BookkeepingTestUtils):
+    """
+    base test case class for functional test case, which have a BKFolder 
+    setup for testing.
+    """
+
+    def afterSetUp(self):
+
+        self.loginAsPortalOwner()
+        # create a BKFolder for testing.
+        self.portal.invokeFactory('BKFolder', id='bk', 
+            title='testing bookkeeping',
+            bk_transaction_types=('Expense', 'Income'),
+            bk_transaction_categories=(
+                'Expense:Parking', 'Expense:Lunch:50', 'Expense:Gas:80',
+                'Expense:FamilyGrocery:0', 'Income:Consulting', 
+                'Income:Service'
+            )
+        )
+
+        # binding to bk for convenient.
+        self.bk = getattr(self.portal, 'bk')

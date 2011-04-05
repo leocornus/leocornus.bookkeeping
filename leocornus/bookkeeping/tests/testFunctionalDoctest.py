@@ -11,6 +11,7 @@ import doctest
 from Testing import ZopeTestCase
 
 from base import BookkeepingFunctionalTestCase
+from base import BKFolderFunctionalTestCase
 
 __author__ = "Sean Chen"
 __email__ = "sean.chen@leocorn.com"
@@ -30,5 +31,9 @@ def test_suite():
         ZopeTestCase.ZopeDocFileSuite('tests/testBookkeepingViews.txt',
                                       package='leocornus.bookkeeping',
                                       test_class=BookkeepingFunctionalTestCase),
+
+        ZopeTestCase.ZopeDocFileSuite('tests/testBKCategoryView.txt',
+                                      package='leocornus.bookkeeping',
+                                      test_class=BKFolderFunctionalTestCase),
         # other text files.
         ])
