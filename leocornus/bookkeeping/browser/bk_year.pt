@@ -9,6 +9,17 @@
 
 <metal:main fill-slot="main">
 
+<script language="javascript">
+    function toggleShowHide(module) {
+      var currentModule = document.getElementById(module).style.display;
+      if (currentModule == 'none') {
+          document.getElementById(module).style.display = 'block';
+      } else if (currentModule == 'block') {
+          document.getElementById(module).style.display = 'none';
+      }
+    }
+</script>
+
   <div tal:replace="structure provider:plone.abovecontenttitle"/>
 
   <h1 class="documentFirstHeading">
@@ -107,6 +118,23 @@
     </strong></th>
   </tr>
 </tbody></table>
+
+<!-- CSV output -->
+<input class="standalone" type="button" onclick="toggleShowHide('csv')" value="CSV Format" />
+<div id='csv' style='DISPLAY: none'>
+<strong>
+Category,bp,Subtotal,GST/HST,PST,Total<br/>
+  <tal:block tal:repeat="category python: here.getCategories(trxType)">
+    <tal:block tal:define="oddrow repeat/category/odd;
+                    categoryBp python: view.getCategoryBuzPercent(trxType, category);
+                    categorySummary python: view.getCategorySummary(trxType, category);
+                    categoryBpSummary python: view.getCategoryBpSummary(trxType, category);"
+    >
+<span tal:replace='category'/>,<span tal:replace='categoryBp'/>,<span tal:replace='categorySummary/subtotal'/>,<span tal:replace='categorySummary/gst'/>,<span tal:replace='categorySummary/pst'/>,<span tal:replace='python: sum(categorySummary.values())'/><br/>
+    </tal:block>
+ </tal:block>
+</strong>
+</div>
         </td>
       </tal:block>
     </tr>
