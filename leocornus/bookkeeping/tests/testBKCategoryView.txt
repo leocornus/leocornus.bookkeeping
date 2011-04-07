@@ -59,4 +59,68 @@ add some transactions for testing:
     >>> browser.url
     'http://nohost/plone/bk/tx1/'
 
-More transaction records.
+More transaction records. getLink method is doing a regex search
+
+    >>> browser.getLink(url='createObject').click()
+    >>> browser.url
+    'http://nohost/plone/bk/portal_factory/BKTransaction/bkt.../edit'
+    >>> browser.getControl(name='title').value = 'trx two'
+    >>> browser.getControl(name='description').value = 'trx two desc'
+    >>> browser.getControl(name='bk_transaction_type').value = ['Expense']
+    >>> browser.getControl(name='bk_transaction_category').value = ['Gas']
+    >>> browser.getControl(name='bk_transaction_date_year').value = ['2010']
+    >>> browser.getControl(name='bk_transaction_date_month').value = ['10']
+    >>> browser.getControl(name='bk_transaction_date_day').value = ['11']
+    >>> browser.getControl(name='bk_transaction_subtotal').value = '86.34'
+    >>> browser.getControl(name='bk_transaction_gst').value = '3.23'
+    >>> browser.getControl(name='bk_transaction_pst').value = '0.00'
+    >>> browser.getControl('Save').click()
+    >>> browser.url
+    'http://nohost/plone/bk/tx2/'
+    
+    >>> browser.getLink(url='createObject').click()
+    >>> browser.getControl(name='title').value = 'trx three'
+    >>> browser.getControl(name='description').value = 'trx three desc'
+    >>> browser.getControl(name='bk_transaction_type').value = ['Expense']
+    >>> browser.getControl(name='bk_transaction_category').value = ['Lunch']
+    >>> browser.getControl(name='bk_transaction_date_year').value = ['2010']
+    >>> browser.getControl(name='bk_transaction_date_month').value = ['05']
+    >>> browser.getControl(name='bk_transaction_date_day').value = ['11']
+    >>> browser.getControl(name='bk_transaction_subtotal').value = '81.35'
+    >>> browser.getControl(name='bk_transaction_gst').value = '16.58'
+    >>> browser.getControl(name='bk_transaction_pst').value = '0.00'
+    >>> browser.getControl('Save').click()
+    >>> browser.url
+    'http://nohost/plone/bk/tx3/'
+
+    >>> browser.getLink(url='createObject').click()
+    >>> browser.getControl(name='title').value = 'trx four'
+    >>> browser.getControl(name='description').value = 'trx four desc'
+    >>> browser.getControl(name='bk_transaction_type').value = ['Expense']
+    >>> browser.getControl(name='bk_transaction_category').value = ['Lunch']
+    >>> browser.getControl(name='bk_transaction_date_year').value = ['2010']
+    >>> browser.getControl(name='bk_transaction_date_month').value = ['07']
+    >>> browser.getControl(name='bk_transaction_date_day').value = ['28']
+    >>> browser.getControl(name='bk_transaction_subtotal').value = '23.35'
+    >>> browser.getControl(name='bk_transaction_gst').value = '17.58'
+    >>> browser.getControl(name='bk_transaction_pst').value = '2.34'
+    >>> browser.getControl('Save').click()
+    >>> browser.url
+    'http://nohost/plone/bk/tx4/'
+
+Let's check the category view.
+
+    >>> browser.getLink(url='bk_category_view').click()
+    >>> '2010-05-11' in browser.contents
+    True
+    >>> '(50%)' in browser.contents
+    True
+
+Make sure the BP amounts are corret.
+
+    >>> '(52.35)' in browser.contents
+    True
+    >>> '(17.08)' in browser.contents
+    True
+    >>> '(1.17)' in browser.contents
+    True
